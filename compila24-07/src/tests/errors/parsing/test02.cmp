@@ -1,0 +1,4 @@
+program p 
+begin  
+    var    x :=  4; (* semicolon is a separator, not terminator *)
+end  

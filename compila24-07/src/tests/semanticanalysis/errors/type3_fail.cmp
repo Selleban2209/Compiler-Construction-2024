@@ -1,0 +1,13 @@
+program type3_fail
+begin
+
+    procedure main()
+    begin
+       var tmp : int
+    in
+       tmp := 21 + 21.0 (* error: expression is float, tmp is int *)
+                        (* 21 + 21.0 should result in float, but  *)
+			(* assigning to tmp is not allowed.       *)
+    end
+
+end

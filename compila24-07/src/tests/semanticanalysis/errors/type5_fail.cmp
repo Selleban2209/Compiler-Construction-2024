@@ -1,0 +1,11 @@
+program type5_fail
+begin
+
+    procedure main()
+    begin
+        var tmp : int
+    in 
+        tmp     := 42;
+        tmp.Foo := 42 (* error: tmp is not a record *)
+    end
+end

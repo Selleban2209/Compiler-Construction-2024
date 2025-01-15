@@ -1,0 +1,17 @@
+Loading from file: ./example.bin
+Variables:
+0: var Complex myGlobalVar
+Procedures:
+0: func void print_float()
+1: func void Main()
+   0: return
+2: func void test(float 0, Complex 1, float 2)
+   0: loadlocal 0
+   3: call printfloat {0}
+   6: return
+Structs:
+0: Complex
+   0: float
+   1: float
+Constants:
+STARTWITH: Main

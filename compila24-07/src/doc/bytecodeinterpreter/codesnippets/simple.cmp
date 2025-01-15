@@ -1,0 +1,9 @@
+// File: ./Simple.d
+struct Complex {
+  var float Real;
+  var float Imag;
+}
+
+var Complex dummy;
+func Main () { }
+

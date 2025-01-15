@@ -1,0 +1,203 @@
+compila24-07 on  master [$!]
+❯ ant list-runme
+Invalid macro definition.
+Buildfile: C:\Users\salle\Documents\UIO\INF5110\BackupCompila\compila24-07\build.xml
+Trying to override old definition of task javac
+
+init:
+
+list-runme:
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by org.apache.tools.ant.types.Permissions (file:/C:/Program%20Files/apache-ant-1.9.16/lib/ant.jar)
+WARNING: Please consider reporting this to the maintainers of org.apache.tools.ant.types.Permissions
+WARNING: System::setSecurityManager will be removed in a future release
+     [java] Loading from file: src/tests/outputs/bin/runme.bin
+     [java] Variables length 3
+     [java] Variables:
+     [java] 0: var float Real
+     [java] 1: var float Imag
+     [java] 2: var Complex dummy
+     [java] Procedures:
+     [java] 0: proc void printint(int 0)
+     [java] 1: proc void printfloat(float 0)
+     [java] 2: proc void printstr(string 0)
+     [java] 3: proc void printline(string 0)
+     [java] 4: proc int readint(int 0)
+     [java] 5: proc float readfloat(float 0)
+     [java] 6: proc int readchar(string 0)
+     [java] 7: proc string readstring(string 0)
+     [java] 8: proc string readline(string 0)
+     [java] 9: proc Complex Add(Complex 0, Complex 1)
+     [java]     var Complex 2
+     [java]     0: new Complex
+     [java]     3: storelocal 2
+     [java]     6: loadlocal 0
+     [java]     9: getfield Complex[0] {float}
+     [java]     14: loadlocal 1
+     [java]     17: getfield Complex[0] {float}
+     [java]     22: add
+     [java]     23: loadlocal 2
+     [java]     26: putfield Complex[0] {float}
+     [java]     31: loadlocal 0
+     [java]     34: getfield Complex[1] {float}
+     [java]     39: loadlocal 1
+     [java]     42: getfield Complex[1] {float}
+     [java]     47: add
+     [java]     48: loadlocal 2
+     [java]     51: putfield Complex[1] {float}
+     [java]     56: loadlocal 2
+     [java]     59: return
+     [java] 10: proc int Max(int 0, int 1)
+     [java]     var int 2
+     [java]     0: loadlocal 0
+     [java]     3: loadlocal 1
+     [java]     6: gt
+     [java]     7: jmpfalse 16
+     [java]     10: loadlocal 0
+     [java]     13: storelocal 2
+     [java]     16: jmp 28
+     [java]     19: jmpfalse 7
+     [java]     22: loadlocal 1
+     [java]     25: storelocal 2
+     [java]     28: nop
+     [java]     29: nop
+     [java]     30: loadlocal 2
+     [java]     33: return
+     [java] 11: proc void printCmplx(Complex 0)
+     [java]     0: pushstring "Real "
+     [java]     3: call printstr {2}
+     [java]     6: loadlocal 0
+     [java]     9: getfield Complex[0] {float}
+     [java]     14: call printfloat {1}
+     [java]     17: pushstring ""
+     [java]     20: call printline {3}
+     [java]     23: pushstring "Imag "
+     [java]     26: call printstr {2}
+     [java]     29: loadlocal 0
+     [java]     32: getfield Complex[1] {float}
+     [java]     37: call printfloat {1}
+     [java]     40: pushstring ""
+     [java]     43: call printline {3}
+     [java]     46: return
+     [java] 12: proc void test()
+     [java]     var Complex 0
+     [java]     var Complex 1
+     [java]     var Complex 2
+     [java]     var int 3
+     [java]     var int 4
+     [java]     var int 5
+     [java]     0: new Complex
+     [java]     3: storelocal 0
+     [java]     6: new Complex
+     [java]     9: storelocal 1
+     [java]     12: pushint 1
+     [java]     17: loadlocal 0
+     [java]     20: putfield Complex[0] {float}
+     [java]     25: pushint 2
+     [java]     30: loadlocal 0
+     [java]     33: putfield Complex[1] {float}
+     [java]     38: pushint 3
+     [java]     43: loadlocal 1
+     [java]     46: putfield Complex[0] {float}
+     [java]     51: pushint 4
+     [java]     56: loadlocal 1
+     [java]     59: putfield Complex[1] {float}
+     [java]     64: loadlocal 0
+     [java]     67: loadlocal 1
+     [java]     70: call Add {9}
+     [java]     73: call printCmplx {11}
+     [java]     76: pushint 3
+     [java]     81: storelocal 3
+     [java]     84: pushint 7
+     [java]     89: storelocal 4
+     [java]     92: loadlocal 4
+     [java]     95: loadlocal 3
+     [java]     98: call Max {10}
+     [java]     101: storelocal 5
+     [java]     104: return
+     [java] 13: proc void printStr(string 0)
+     [java]     0: loadlocal 0
+     [java]     3: call printstr {2}
+     [java]     6: return
+     [java] 14: proc void inOutTest()
+     [java]     var int 0
+     [java]     var int 1
+     [java]     0: pushstring "skriv v1"
+     [java]     3: call printline {3}
+     [java]     6: call readint {4}
+     [java]     9: storelocal 0
+     [java]     12: pushstring "skriv v2"
+     [java]     15: call printline {3}
+     [java]     18: call readint {4}
+     [java]     21: storelocal 1
+     [java]     24: pushstring "Storst "
+     [java]     27: call printstr {2}
+     [java]     30: loadlocal 0
+     [java]     33: loadlocal 1
+     [java]     36: call Max {10}
+     [java]     39: call printint {0}
+     [java]     42: pushstring ""
+     [java]     45: call printline {3}
+     [java]     48: return
+     [java] 15: proc void main()
+     [java]     var float 0
+     [java]     var int 1
+     [java]     var string 2
+     [java]     0: pushfloat 6.48074
+     [java]     5: storelocal 0
+     [java]     8: loadlocal 0
+     [java]     11: call printfloat {1}
+     [java]     14: pushstring ""
+     [java]     17: call printline {3}
+     [java]     20: pushint 7
+     [java]     25: storelocal 1
+     [java]     28: loadlocal 1
+     [java]     31: call printint {0}
+     [java]     34: pushstring ""
+     [java]     37: call printline {3}
+     [java]     40: pushstring "TestNavn"
+     [java]     43: storelocal 2
+     [java]     46: loadlocal 2
+     [java]     49: call printStr {13}
+     [java]     52: pushstring ""
+     [java]     55: call printline {3}
+     [java]     58: pushstring "test"
+     [java]     61: call printline {3}
+     [java]     64: call test {12}
+     [java]     67: call inOutTest {14}
+     [java]     70: new Complex
+     [java]     73: storeglobal dummy{Complex}
+     [java]     76: pushfloat 1.0
+     [java]     81: loadglobal dummy
+     [java]     84: putfield Complex[0] {float}
+     [java]     89: pushfloat 2.0
+     [java]     94: loadglobal dummy
+     [java]     97: putfield Complex[1] {float}
+     [java]     102: loadglobal dummy
+     [java]     105: call printCmplx {11}
+     [java]     108: pushstring "DONE"
+     [java]     111: call printline {3}
+     [java]     114: return
+     [java] Structs:
+     [java] 0: Complex
+     [java]     0: float
+     [java]     1: float
+     [java] Constants:
+     [java] 0: Real
+     [java] 1:
+     [java] 2: Imag
+     [java] 3:
+     [java] 4: skriv v1
+     [java] 5: skriv v2
+     [java] 6: Storst
+     [java] 7:
+     [java] 8:
+     [java] 9:
+     [java] 10: TestNavn
+     [java] 11:
+     [java] 12: test
+     [java] 13: DONE
+     [java] STARTWITH: main
+
+BUILD SUCCESSFUL
+Total time: 0 seconds

@@ -1,0 +1,14 @@
+(PROGRAM (NAME A_A)
+	(VAR_DECL  (NAME x : 
+	(NAME  ))
+ )
+	(VAR_DECL  (NAME x : 
+	(REF_TYPE
+	(NAME  )))
+ )
+	(VAR_DECL  (NAME x : 
+	(REF_TYPE
+	(REF_TYPE
+	(NAME  ))))
+ )
+)

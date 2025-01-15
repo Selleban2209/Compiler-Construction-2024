@@ -1,0 +1,17 @@
+program variable_scope_shadow_fail
+begin
+
+    procedure main()
+    begin
+        var flag : bool;
+        procedure change_flag() 
+        begin
+             var flag : int
+        in
+             flag := not flag (* error: refers to local int, not outer level boolean! *)
+        end
+     in 
+        flag := false;    
+        change_flag()
+    end
+end

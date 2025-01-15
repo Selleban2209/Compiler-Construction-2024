@@ -1,0 +1,293 @@
+% Created 2024-02-13 Tue 06:09
+% Intended LaTeX compiler: pdflatex
+\documentclass{beamer}
+ 		 
+
+\input{switches}
+\input{style/style-common}
+\input{style/style-presentation}
+\input{preamble}
+\input{macros}
+\input{macros-tmp}
+\renewcommand{\maketitle}{}
+\def\mytitle{Compiler Construction}    %% what for?
+\def\myauthor{Martin Steffen}          %% what for?
+\def\mydate{Spring 2024}               %% what for?
+\usetheme{default}
+\usecolortheme{}
+\usefonttheme{}
+\useinnertheme{}
+\useoutertheme{}
+\date{Spring 2022}
+\title{INF5110 -- Oblig  1}
+
+\hypersetup{
+ pdfauthor={},
+ pdftitle={INF5110 -- Oblig  1},
+ pdfkeywords={compiler, compiler construction},
+ pdfsubject={compiler construction},
+ pdfcreator={Emacs 29.2 (Org mode 9.7-pre)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\section{Compila 24}
+\label{sec:org65172c1}
+
+\begin{frame}[label={sec:org99605b6}]{Oblig 1}
+\begin{itemize}
+\item material (also for oblig 2) based on previous years, including contributions from Eyvind
+W. Axelsen, Henning Berg, Fredrik Sørensen, and others
+\end{itemize}
+
+
+\begin{itemize}
+\item see also the course web-page, containing links to ``resources''
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgb218816}]{Goal (of oblig 1)}
+\begin{block}{Parsing}
+Determine if programs written in \emph{Compila 24} are syntactically correct: 
+
+\begin{itemize}
+\item scanner
+\item parser
+\end{itemize}
+\end{block}
+\begin{itemize}
+\item first part of a compiler, oblig 2 will add to it
+\item language spec provided separately
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgc4e9a10}]{Learning outcomes}
+\begin{itemize}
+\item using \alert{tools} for parser/scanner generation
+\begin{itemize}
+\item JFlex
+\item CUP
+\end{itemize}
+
+\item variants of a grammar for the same languages
+
+\begin{itemize}
+\item \alert{transforming} one form (EBNF) to another (compatible with the used
+tools)
+
+\item controlling \alert{precedence} and \alert{associativity}
+\end{itemize}
+
+\item designing and implementing an \alert{AST}  data structure
+
+\begin{itemize}
+\item using the parsing tools to build such trees
+\item pretty-printing such trees
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orgbfa7cd0}]{Compila language at a glance}
+
+\lstinputlisting[basicstyle=\scriptsize,emph={begin,end,in, procedur,program,var,return,struct}]{code/myprogram.cmp}
+\end{frame}
+\begin{frame}[label={sec:org52cb5de},plain]{Another glance}
+
+\lstinputlisting[basicstyle=\scriptsize,emph={begin,end,in, proc,program,var,return,struct}]{code/swap.cmp}
+\end{frame}
+\begin{frame}[label={sec:org8c7eb1c},plain]{Grammar (1): declarations}
+
+%~/cor/teaching/compila/src/doc/languagespec/
+\lstinputlisting[basicstyle=\scriptsize,lastline=14]{../../doc/languagespec/grammar.txt}
+\end{frame}
+\begin{frame}[label={sec:org95f7f12},plain]{Grammar (2): expressions, statements, etc.}
+
+%~/cor/teaching/compila/src/doc/languagespec/
+\lstinputlisting[basicstyle=\scriptsize,firstline=15,lastline=40]{../../doc/languagespec/grammar.txt}
+\end{frame}
+\begin{frame}[label={sec:org14ff7ce},plain]{Grammar (3): statements and types}
+
+%~/cor/teaching/compila/src/doc/languagespec/
+\lstinputlisting[basicstyle=\scriptsize,firstline=41]{../../doc/languagespec/grammar.txt}
+\end{frame}
+\section{Tools}
+\label{sec:orgd36e149}
+
+\begin{frame}[label={sec:orgcb79ac5},fragile]{Tools: JFlex}
+ \begin{itemize}
+\item scanner generator (or lexer generator) tool
+
+\begin{itemize}
+\item \alert{input}: lexical specification
+\item \alert{output}: scanner program in Java
+\end{itemize}
+
+\item lexical spec written as \texttt{.lex} file
+
+\item consists of \alert{3 parts}
+
+\begin{itemize}
+\item user code
+\item options and macros
+\item lexical rules
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org710777b}]{Sample lex code}
+\includegraphics[width=\textwidth]{figures/snaps/lexcode}
+\end{frame}
+\begin{frame}[label={sec:orgea3f650},fragile]{CUP: Construction of useful parsers (for Java)}
+ \begin{itemize}
+\item a tool to easily (ymmv) generate \emph{parsers}
+
+\item reads tokes from the scanner using \texttt{next\_token()}
+\item the \texttt{\%cup} option (previous slide) makes that work
+\end{itemize}
+\begin{block}{Input}
+grammar in BNF with \alert{action} code
+
+\begin{verbatim}
+var_decl ::= VAR ID:name COLON type:vtype
+ {: RESULT =  new VarDecl(name, vtype); :};
+\end{verbatim}
+\end{block}
+\begin{itemize}
+\item \alert{output}: parser program (in Java)
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org81c758c}]{Sample CUP code}
+\includegraphics[width=\textwidth]{figures/snaps/cupcode}
+\end{frame}
+\begin{frame}[label={sec:orgafc03b5},fragile]{Build tool: ant}
+
+ \begin{center}
+ \includegraphics[width=0.2\textwidth]{figures/snaps/antlogo}
+\end{center}
+
+
+\begin{itemize}
+\item Java-based build tool (think ``make'')
+\item config in \texttt{build.xml}
+\item can contain different \alert{targets}
+\end{itemize}
+\begin{block}{typical general targets}
+\begin{itemize}
+\item test
+\item clean
+\item build
+\item run
+\end{itemize}
+\end{block}
+\begin{itemize}
+\item supplied configuration should take care of calling \texttt{jflex}, \texttt{cup}, and
+\texttt{javadoc} for you
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:orga383b04}]{AST data structure}
+
+\begin{center}
+ \includegraphics[width=0.8\textwidth]{figures/snaps/astclasses}
+\end{center}
+\end{frame}
+\begin{frame}[label={sec:orgfd9a3a4},fragile]{Overview over the directory + first steps}
+ \begin{itemize}
+\item see the Readme at/from the \texttt{github.uio.no}
+\end{itemize}
+
+
+\includegraphics[width=0.66\textwidth]{figures/snaps/old/directorystruct-o1}
+\end{frame}
+\begin{frame}[label={sec:orge7ceff1}]{Building: putting it together}
+
+\begin{center}
+ \includegraphics[width=0.8\textwidth]{figures/snaps/buildprocess}
+\end{center}
+\end{frame}
+\section{Official}
+\label{sec:orgba6323a}
+
+\begin{frame}[label={sec:org5501907},fragile]{Deadline}
+ \begin{alertblock}{Deadline}
+\alert{Friday 22. 03. 2024, 23:59}
+\end{alertblock}
+\begin{itemize}
+\item don't miss the deadline
+\item for extensions, administration needs to agree (\texttt{studadm}), contact them
+if sick etc
+\item even if not 100\% finished
+\begin{itemize}
+\item deliver what you have
+\item contact early when problems arise
+\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}[label={sec:org4bbd1f0},fragile]{Deliverables}
+ \begin{itemize}
+\item see also the ``handout''
+\end{itemize}
+\begin{block}{Deliverables (1)}
+\begin{itemize}
+\item working \alert{parser}
+\begin{itemize}
+\item parse the supplied sample programs
+\item printout the resulting AST
+\end{itemize}
+
+\item \alert{two} grammars (two \texttt{.cup}-files)
+
+\begin{itemize}
+\item one unambiguous
+\item one ambiguous, where ambiguities resolved through precedence
+declations in \emph{CUP}, e.g.
+\end{itemize}
+\end{itemize}
+
+\begin{verbatim}
+precendence left AND;
+\end{verbatim}
+\end{block}
+\end{frame}
+\begin{frame}[label={sec:orgf844996}]{Deliverables}
+\begin{block}{Deliverables (2)}
+\begin{itemize}
+\item report (with name(s) and UiO user name(s)
+\item discussion of the solution (see handout for questions)
+\item in particular: comparison of the two grammars
+\item ``Readme''
+\end{itemize}
+\end{block}
+\begin{itemize}
+\item the code must \emph{build} (with ant) and run
+\item test it on the  UiO RHEL (linux) platform
+\end{itemize}
+\begin{block}{Ask}
+If problems, \alert{ask in time}  (\alert{NOT} Friday at the deadline)
+\end{block}
+\end{frame}
+\begin{frame}[label={sec:org2c7cc1d}]{Hand-in procedure}
+\begin{itemize}
+\item as the previous years since some time, we use  \emph{git}
+
+\item \url{https://github.uio.no} resp.
+\href{https://github.uio.no/compilerconstruction-inf5110/compila}{https://github.uio.no/compilerconstruction-inf5110/compila24-xx}
+
+\item you need
+
+\begin{itemize}
+\item a login
+\item send me emails that you want to do oblig (+ potential partner)
+\(\Rightarrow\) I tell you group number
+\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+\item see also the \alert{handout} and \alert{Readme}
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+\end{document}

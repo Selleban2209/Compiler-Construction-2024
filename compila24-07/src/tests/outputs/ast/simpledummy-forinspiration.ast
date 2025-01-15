@@ -1,0 +1,25 @@
+
+(PROGRAM (NAME DummyProgram)
+	(REC_DECL (NAME ...))
+        (VAR_DECL (NAME TYPE NULL))
+)
+
+
+
+
+# This is just for "inspiration". Oblig 1 requires a print-out of the
+# syntax tree. It's not specified how the output should look
+# like. It's not required to be a full ``pretty printer'', just to
+# show the form of the AST (which may be useful for debugging). The
+# sketched format is not meant to represent the required format, but
+# one can use parentheses (and indentation) to make the output
+# readable.  The shown output just shows the nodes corresponding to
+# the tokens (like NAME), without showing values Like in a variable
+# declaration written "var x : int;" in concrete syntax, the above
+# sample output shows NAME and TYPE, but one might be a good idea to
+# write (VAR_DECL (NAME("x") TYPE(INT) NULL)) or similar.  The
+# structure should reflect your design of the AST, so PROGRAM (in the
+# illustration) represents neither the string "program" not the token
+# and non-terminal (in the given language specification or your LEX
+# grammar), but a node "Program" in the AST (if your syntax tree has
+# such a node, wich is reasonable to assume).

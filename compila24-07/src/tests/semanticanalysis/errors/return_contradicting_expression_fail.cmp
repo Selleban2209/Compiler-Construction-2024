@@ -1,0 +1,10 @@
+program return_contradicting_expression_fail
+begin
+
+    (* error: Type of return stmt. differs from declared type. *)
+    procedure main()
+    begin
+        in
+        return 1234
+    end
+end

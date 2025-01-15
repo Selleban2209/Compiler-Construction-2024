@@ -1,0 +1,12 @@
+(PROGRAM (NAME A_A2)
+	(PROCEDURE_DECL (NAME  a )
+	(VAR_DECL  (NAME x : 
+	(NAME  ):=(INT_LITERAL 4))
+ )
+	(VAR_DECL  (NAME x : 
+	(NAME  ))
+ )
+	(VAR_DECL  (NAME x:=(INT_LITERAL 4)+(INT_LITERAL 4))
+ )
+	(ASSIGN (NAME x) := (NAME x)+(INT_LITERAL 1) ))
+)

@@ -1,0 +1,452 @@
+* Oblig 1                                           :B_ignoreheadig:
+  :PROPERTIES:
+  :BEAMER_env: ignoreheading
+  :END:
+
+
+
+** Compila 24
+
+*** Oblig 1                                                         :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- material (also for oblig 2) based on previous years, including contributions from Eyvind
+  W. Axelsen, Henning Berg, Fredrik Sørensen, and others
+    
+
+- see also the course web-page, containing links to ``resources''
+
+
+*** Goal (of oblig 1)                                               :B_frame: 
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+**** Parsing                                                        :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+
+Determine if programs written in /Compila 24/ are syntactically correct: 
+
+- scanner
+- parser
+
+
+**** Rest                                            :B_ignoreheading:ignore:
+     :PROPERTIES:
+     :BEAMER_env: ignoreheading
+     :END:
+
+
+
+- first part of a compiler, oblig 2 will add to it
+- language spec provided separately 
+
+
+*** Learning outcomes                                               :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- using *tools* for parser/scanner generation
+   - JFlex
+   - CUP
+
+- variants of a grammar for the same languages
+
+   - *transforming* one form (EBNF) to another (compatible with the used
+     tools)
+
+   - controlling *precedence* and *associativity*
+
+- designing and implementing an *AST*  data structure
+
+    - using the parsing tools to build such trees
+    - pretty-printing such trees
+
+
+*** Compila language at a glance                                    :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+#+begin_export latex 
+
+\lstinputlisting[basicstyle=\scriptsize,emph={begin,end,in, procedur,program,var,return,struct}]{code/myprogram.cmp}
+
+#+end_export
+
+
+
+*** Another glance                                                  :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :BEAMER_opt: plain
+    :END:
+
+
+
+#+begin_export latex 
+
+\lstinputlisting[basicstyle=\scriptsize,emph={begin,end,in, proc,program,var,return,struct}]{code/swap.cmp}
+
+#+end_export
+
+
+*** Grammar (1): declarations                                       :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :BEAMER_opt: plain
+    :END:
+
+
+
+#+begin_export latex 
+
+%~/cor/teaching/compila/src/doc/languagespec/
+\lstinputlisting[basicstyle=\scriptsize,lastline=14]{../../doc/languagespec/grammar.txt}
+
+#+end_export
+
+
+
+
+
+
+*** Grammar (2): expressions, statements, etc.                      :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :BEAMER_opt: plain
+    :END:
+
+
+
+#+begin_export latex 
+
+%~/cor/teaching/compila/src/doc/languagespec/
+\lstinputlisting[basicstyle=\scriptsize,firstline=15,lastline=40]{../../doc/languagespec/grammar.txt}
+
+#+end_export
+
+
+
+
+*** Grammar (3): statements and types                               :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :BEAMER_opt: plain
+    :END:
+
+
+
+#+begin_export latex 
+
+%~/cor/teaching/compila/src/doc/languagespec/
+\lstinputlisting[basicstyle=\scriptsize,firstline=41]{../../doc/languagespec/grammar.txt}
+
+#+end_export
+
+
+
+
+** Tools
+
+*** Tools: JFlex                                                    :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- scanner generator (or lexer generator) tool
+
+   - *input*: lexical specification
+   - *output*: scanner program in Java
+
+- lexical spec written as ~.lex~ file
+
+- consists of *3 parts*
+
+   - user code
+   - options and macros
+   - lexical rules
+
+
+*** Sample lex code                                                 :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+
+#+begin_export latex 
+ \includegraphics[width=\textwidth]{figures/snaps/lexcode}
+#+end_export
+
+
+
+*** CUP: Construction of useful parsers (for Java)                  :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+
+- a tool to easily (ymmv) generate /parsers/
+
+- reads tokes from the scanner using ~next_token()~
+- the ~%cup~ option (previous slide) makes that work
+
+
+
+**** Input                                                          :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+grammar in BNF with *action* code
+
+#+begin_example 
+  var_decl ::= VAR ID:name COLON type:vtype
+   {: RESULT =  new VarDecl(name, vtype); :};
+#+end_example
+
+
+**** Rest                                                            :ignore:
+  
+ - *output*: parser program (in Java)
+
+
+*** Sample CUP code                                                 :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+
+#+begin_export latex 
+ \includegraphics[width=\textwidth]{figures/snaps/cupcode}
+#+end_export
+
+
+
+*** Build tool: ant                                                 :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+#+begin_export latex 
+
+\begin{center}
+ \includegraphics[width=0.2\textwidth]{figures/snaps/antlogo}
+\end{center}
+
+#+end_export
+
+
+- Java-based build tool (think ``make'')
+- config in ~build.xml~
+- can contain different *targets*
+
+**** typical general targets                                        :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+    - test
+    - clean
+    - build
+    - run
+
+**** Rest                                                            :ignore:
+
+- supplied configuration should take care of calling ~jflex~, ~cup~, and
+  ~javadoc~ for you
+
+**** Remarks                                                        :private:
+
+*** AST data structure                                              :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+#+begin_export latex 
+
+\begin{center}
+ \includegraphics[width=0.8\textwidth]{figures/snaps/astclasses}
+\end{center}
+
+#+end_export
+
+
+
+
+*** Overview over the directory + first steps                       :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+- see the Readme at/from the ~github.uio.no~
+
+
+#+begin_export latex 
+ \includegraphics[width=0.66\textwidth]{figures/snaps/old/directorystruct-o1}
+#+end_export
+
+
+
+*** Provided source code                                    :B_frame:ARCHIVE:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+#+begin_export latex 
+
+\begin{center}
+ \includegraphics[width=0.8\textwidth]{figures/snaps/structureoverview}
+\end{center}
+
+#+end_export
+
+
+*** Building: putting it together                                   :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+
+#+begin_export latex 
+
+\begin{center}
+ \includegraphics[width=0.8\textwidth]{figures/snaps/buildprocess}
+\end{center}
+
+#+end_export
+
+** Official 
+
+*** Deadline                                                        :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+
+
+**** Deadline                                                  :B_alertblock:
+     :PROPERTIES:
+     :BEAMER_env: alertblock
+     :END:
+
+ 
+
+ *Friday 22. 03. 2024, 23:59*
+
+
+**** Rest                                                            :ignore:
+   
+
+- don't miss the deadline
+- for extensions, administration needs to agree (~studadm~), contact them
+  if sick etc
+- even if not 100% finished
+   - deliver what you have
+   - contact early when problems arise
+
+
+*** Deliverables                                                    :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- see also the ``handout''
+
+**** Deliverables (1)                                               :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+- working *parser*
+     - parse the supplied sample programs
+     - printout the resulting AST
+
+- *two* grammars (two ~.cup~-files)
+
+   - one unambiguous
+   - one ambiguous, where ambiguities resolved through precedence
+     declations in /CUP/, e.g.
+
+#+begin_example 
+ precendence left AND;
+#+end_example
+
+
+*** Deliverables                                                    :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+**** Deliverables (2)                                               :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+
+- report (with name(s) and UiO user name(s)
+- discussion of the solution (see handout for questions)
+- in particular: comparison of the two grammars
+- ``Readme''
+
+**** Rest                                                            :ignore:
+
+- the code must /build/ (with ant) and run
+- test it on the  UiO RHEL (linux) platform
+
+**** Ask                                                            :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+
+If problems, *ask in time*  (*NOT* Friday at the deadline)
+
+
+
+*** Hand-in procedure                                               :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- as the previous years since some time, we use  /git/
+
+-  [[https://github.uio.no]] resp.
+   [[https://github.uio.no/compilerconstruction-inf5110/compila][https://github.uio.no/compilerconstruction-inf5110/compila24-xx]]
+
+- you need
+
+  - a login
+  - send me emails that you want to do oblig (+ potential partner)
+    $\Rightarrow$ I tell you group number
+
+
+- see also the *handout* and *Readme*
+
+# - code ready /tomorrow/
+
+
+
+
+

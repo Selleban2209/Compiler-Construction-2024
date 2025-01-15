@@ -1,0 +1,348 @@
+package parser;   
+import java_cup.runtime.*;
+import syntaxtree.*;
+import java.util.*;
+
+
+parser code {:
+
+:};
+
+/* Terminals */
+/* Note, those might not be the terminals for this semester     */
+/* Not all tokens are covered here, some may not be useful,     */
+/* for instance, this semester we won't have a "class" keyword, */
+/* but a "struct". Hence a corresponding token should better    */
+/* be called STRUCT or similar, for clarity.                    */
+terminal                        PROGRAM, CLASS;
+terminal                        BEGIN, END;
+terminal                        IN;
+terminal                        LPAR, RPAR;
+terminal                        SEMI, RETURN;
+terminal                        ASSIGN;
+terminal                        STRUCT;
+terminal                        PROCEDURE;
+terminal                        LCURL, RCURL;
+terminal String                 ID;
+
+/* Declerations*/
+non terminal Program            program;
+non terminal List<Decl>         decl_list;
+non terminal List<Decl>         decl_list_f;
+non terminal Decl               decl;    
+non terminal RecDecl            rec_decl;
+non terminal ProcDecl           proc_decl;
+non terminal VarDecl            var_decl;
+non terminal DataType           data_type; 
+non terminal ParamDecl          param_decl;
+non terminal List<ParamDecl>    rec_params;
+non terminal  List<ParamDecl>  proc_params_f;          
+non terminal  List<ParamDecl>  proc_params;          
+/*statements*/
+non terminal Statement           stmt; 
+non terminal List<Statement>      stmt_list;
+non terminal List<Statement>      stmt_list_f;
+non terminal AssignStmt         ass_stmt;
+non terminal IfStmt             if_stmt;
+non terminal WhileStmt           while_stmt;
+non terminal RetStmt             ret_stmt;
+non terminal CallStmt            call_stmt;
+
+
+
+/*Expressions*/
+
+non terminal Exp                exp;
+non terminal VarExp             var;  
+non terminal Literal          literal;
+non terminal NewDef           new_def;
+non terminal CallExp            call_exp;
+non terminal List<Exp>        exp_list;
+non terminal Exp              atom;             
+
+non terminal Exp              log_op_or;
+non terminal Exp              log_op_and;
+non terminal Exp              arith_op_as;
+non terminal Exp              arith_op_md;
+non terminal Exp              arith_op_pw;
+
+
+
+non terminal Exp             rel_op;
+non terminal Exp            arith_op;
+
+         
+
+
+/*refrencing*/
+non terminal RefVar             ref_var;
+non terminal DerefVar           deref_var;
+
+non terminal Exp             not_exp;
+
+
+
+/*keywords*/
+terminal                        IF;
+terminal                        WHILE;
+terminal                        THEN;
+terminal                        ELSE;
+terminal                        FI;
+terminal                        DO;
+terminal                        OD;
+terminal                        VAR;
+terminal                        STATEMENT;
+terminal                        NEW; 
+terminal                        NOT;
+/*symbols*/
+terminal                        COLON; 
+terminal                        COMMA;
+terminal                        DOT;
+      
+
+terminal String                 STRING_LITERAL;
+terminal Integer                INT_LITERAL;
+terminal Boolean                BOOL_LITERAL;
+terminal Float                  FLOAT_LITERAL;
+terminal                        NULL;
+
+
+/*operators*/
+terminal                        AND;
+terminal                        OR;
+
+terminal                       GT;
+terminal                           LT;
+terminal                         EQ; 
+terminal                         GEQ;
+terminal                         LEQ;
+terminal                         ABR;
+
+terminal                       ADD;
+terminal                         SUB;
+terminal                         MULT;
+terminal                         DIV;
+terminal                        POW;
+
+
+
+
+/*types*/
+terminal                        FLOAT_TYPE;
+terminal                        INT_TYPE;                        
+terminal                        STRING_TYPE;                        
+terminal                        BOOL_TYPE;                        
+
+terminal                        REF; 
+terminal                        DEREF; 
+
+
+
+
+/* The grammar */
+program         ::= PROGRAM ID:name BEGIN decl_list:dl END 
+                        {: RESULT = new Program(name, dl); :} 
+                  | PROGRAM ID:name BEGIN END
+                        {: RESULT = new Program(name, new LinkedList<Decl>()); :}
+                  ;
+
+
+
+decl_list       ::= decl:d {: List<Decl> l = new LinkedList<Decl>();
+                                      l.add(d);
+                                      RESULT = l; :} 
+                  |   decl_list:dl SEMI decl:d 
+                            {: dl.add(d); RESULT = dl; :}
+                            
+                            ;
+            
+decl_list_f     ::= decl_list:dl {: RESULT = dl; :}
+		      | {: RESULT = new LinkedList<Decl>(); :};                       
+
+decl            ::= var_decl:vd {:RESULT= vd;:}
+                  | rec_decl:rd {:RESULT= rd;:}
+                  | proc_decl:pd {:RESULT= pd;:}
+                  ;
+                  
+
+                    
+
+proc_decl       ::= PROCEDURE ID:name LPAR proc_params_f:ppf RPAR BEGIN stmt_list_f:stmtLi END {:RESULT = new ProcDecl(name, ppf, stmtLi);:}
+                  | PROCEDURE ID:name LPAR proc_params_f:ppf RPAR BEGIN decl_list_f:dlf IN stmt_list_f:stmtLi END {:RESULT = new ProcDecl(name, ppf, stmtLi, dlf);:}
+                  | PROCEDURE ID:name LPAR proc_params_f:ppf RPAR COLON data_type:dt BEGIN decl_list_f:dlf IN stmt_list_f:stmtLi END {:RESULT = new ProcDecl(name, ppf, stmtLi, dlf,dt);:}
+                  | PROCEDURE ID:name LPAR proc_params_f:ppf RPAR COLON data_type:dt BEGIN stmt_list_f:stmtLi END {:RESULT = new ProcDecl(name, ppf, stmtLi,dt);:}
+              
+                  
+                  ;
+
+rec_decl        ::= STRUCT ID:name LCURL rec_params:rp RCURL {:RESULT= new RecDecl(name, rp);:}
+                  | STRUCT ID:name LCURL RCURL {:RESULT = new RecDecl(name, new LinkedList<ParamDecl>());:}
+                  
+                  
+                  ;
+
+rec_params      ::= param_decl:pd {:List<ParamDecl> pdl = new LinkedList<ParamDecl>(); pdl.add(pd); RESULT= pdl;:}
+                  | rec_params:rp SEMI param_decl:pd {:rp.add(pd); RESULT= rp;:}
+
+                  ;
+
+proc_params     ::=param_decl:pd {:List<ParamDecl> ppl = new LinkedList<ParamDecl>(); ppl.add(pd); RESULT= ppl;:}
+                  | proc_params:pp  COMMA param_decl:pd {:pp.add(pd); RESULT= pp;:}
+                  ;
+
+proc_params_f   ::= proc_params:pp {: RESULT = pp; :}
+		      |{: RESULT = new LinkedList<ParamDecl>(); :}
+                  ;
+
+var_decl        ::=  VAR ID:name COLON data_type:tp  {:RESULT= new VarDecl(name, tp);:}
+                  | VAR ID:name COLON data_type:tp ASSIGN exp:exp {:RESULT= new VarDecl(name, tp, exp);:}
+                  |VAR ID:name ASSIGN exp:exp {:RESULT= new VarDecl(name, exp);:}
+                  ;
+
+param_decl      ::= ID:name COLON data_type:tp {:RESULT = new ParamDecl(name, tp);:};
+
+
+data_type       ::= FLOAT_TYPE {:RESULT = new DataType("float");:}
+                  | INT_TYPE {:RESULT = new DataType("int");:}    
+                  | BOOL_TYPE {:RESULT = new DataType("bool");:}    
+                  | STRING_TYPE {:RESULT = new DataType("string");:}    
+                  | ID:name  {:RESULT = new DataType(name);:}  
+                  | REF LPAR data_type:tp RPAR{:RESULT= new RefType(tp);:}
+                  
+                  ;  
+
+
+
+
+stmt            ::=  ass_stmt:as {:RESULT = as;:}  
+                  | if_stmt:ifst {:RESULT =ifst;:}  
+                  | while_stmt:whst {:RESULT =whst;:}   
+                  | ret_stmt:rtst  {:RESULT= rtst;:}   
+                  | call_stmt:clst {:RESULT= clst;:}  
+                  ;
+
+
+
+stmt_list       ::= stmt:st {:List<Statement> stmtLi = new LinkedList<Statement>(); stmtLi.add(st); RESULT= stmtLi;:}
+                  | stmt_list:stmtLi SEMI stmt:st {:stmtLi.add(st); RESULT=stmtLi;:}
+                  ;
+
+stmt_list_f	::= stmt_list:sl {: RESULT = sl; :}
+		        | {: RESULT = new LinkedList<Statement>(); :}; 
+
+
+ass_stmt        ::= var:vr ASSIGN exp:exp {:RESULT= new AssignStmt(vr, exp);:}
+                  | deref_var:drfv ASSIGN exp:exp {:RESULT = new AssignStmt(drfv, exp);:}
+                  
+                  ;
+
+
+if_stmt         ::= IF exp:exp THEN stmt_list_f:ifStmtLi FI {:RESULT= new IfStmt(exp, ifStmtLi);:}
+                  | IF exp:exp THEN stmt_list_f:ifStmtLi ELSE  stmt_list_f:elsStmtLi FI {:RESULT= new IfStmt(exp, ifStmtLi, elsStmtLi);:}
+                  ;
+
+
+while_stmt      ::= WHILE exp:exp DO stmt_list_f:whStmtLi OD {:RESULT= new WhileStmt(exp, whStmtLi);:}
+                  ;
+
+ret_stmt        ::= RETURN exp:exp = {:RESULT= new RetStmt(exp);:}
+                  | RETURN {:RESULT= new RetStmt();:}
+                  ;
+
+
+
+call_stmt       ::=  ID:name LPAR exp_list:el RPAR {:RESULT= new CallStmt(name, el);:}
+                  | ID:name LPAR RPAR {:RESULT= new CallStmt(name);:}
+                  ;
+
+
+
+
+exp_list       ::= exp:exp {:List<Exp> expLi = new LinkedList<Exp>(); expLi.add(exp); RESULT= expLi;:}
+                  | exp_list:el COMMA exp:exp {:el.add(exp); RESULT=el;:}
+                  ;
+
+
+
+call_exp        ::= ID:name LPAR exp_list:el RPAR {:RESULT= new CallExp(name, el);:}
+                  | ID:name LPAR RPAR {:RESULT= new CallExp(name);:}
+                  ;
+new_def         ::= NEW ID:name {:RESULT  = new NewDef(new DataType(name));:}
+                   ;
+
+
+/*Expression baked in, starting with left precedence terminals*/
+exp              ::= log_op_or:lopor{:RESULT = lopor;:}
+                  ;
+                  
+
+log_op_or        ::= log_op_or:exp0 OR log_op_and:exp1 {:RESULT= new LogOp(exp0, "||", exp1);:}
+                  | log_op_and:exp1 {:RESULT= exp1;:}
+                  ;
+
+log_op_and       ::=log_op_and:exp0 AND not_exp:exp1 {:RESULT= new LogOp(exp0, "&&", exp1);:}
+                  | not_exp:exp1 {:RESULT =exp1;:}
+                  ;
+
+not_exp         ::= NOT not_exp:exp {:RESULT= new NotExp(exp);:}
+                  | rel_op:exp {:RESULT=exp;:}
+                  ;
+
+rel_op         ::=  atom:exp0 GT arith_op_as:exp1 {:RESULT= new RelOp(exp0,">",exp1);:}
+                  | atom:exp0 LT arith_op_as:exp1 {:RESULT= new RelOp(exp0,"<",exp1);:}
+                  | atom:exp0 EQ arith_op_as:exp1 {:RESULT= new RelOp(exp0,"=",exp1);:}
+                  | atom:exp0 GEQ arith_op_as:exp1 {:RESULT= new RelOp(exp0,">=",exp1);:}
+                  | atom:exp0 LEQ arith_op_as:exp1 {:RESULT= new RelOp(exp0,"<=",exp1);:}
+                  | atom:exp0 ABR arith_op_as:exp1 {:RESULT= new RelOp(exp0,"<>",exp1);:}
+                  | arith_op_as:aopas {:RESULT = aopas;:}
+                  ;
+
+arith_op_as     ::= arith_op_as:exp0 ADD arith_op_md:exp1 {:RESULT= new ArithOp(exp0,"+",exp1);:}
+                  | arith_op_as:exp0 SUB arith_op_md:exp1 {:RESULT= new ArithOp(exp0,"-",exp1);:}
+                  | arith_op_md:aopmd{:RESULT= aopmd;:}
+                  ;
+
+arith_op_md     ::=  arith_op_md:exp0 MULT arith_op_pw:exp1 {:RESULT= new ArithOp(exp0,"*",exp1);:}
+                  | arith_op_md:exp0 DIV arith_op_pw:exp1 {:RESULT= new ArithOp(exp0,"/",exp1);:}
+                  | arith_op_pw:aoppw {:RESULT= aoppw;:}
+                  ;
+
+arith_op_pw    ::= atom:exp0 POW arith_op_pw:exp1 {:RESULT= new ArithOp(exp0,"^",exp1);:}
+                  | atom:at {:RESULT = at;:}
+                  ;
+
+
+atom            ::= literal:li {: RESULT = li; :}
+                  | var:vr {: RESULT= vr; :}
+                  | LPAR exp:exp RPAR {: RESULT=exp; :}
+                  | new_def:nwd {: RESULT= nwd; :}
+                  | ref_var:rfv {: RESULT= rfv; :}
+                  | deref_var:drfv {: RESULT= drfv; :}
+                  | call_exp:clexp {: RESULT= clexp; :}
+                  ;
+
+
+var             ::= ID:name {:RESULT = new VarExp(name);:}
+                  | atom:exp DOT ID:name {:RESULT= new VarExp(name,exp);:}
+                  ;
+
+ref_var         ::= REF LPAR var:var RPAR {:RESULT= new RefVar(var);:}
+                  ;
+deref_var       ::= DEREF LPAR var:var RPAR {:RESULT = new DerefVar(var);:}
+                  | DEREF LPAR deref_var:drfVar RPAR {:RESULT= drfVar;:}
+                  ;
+
+
+literal      ::= FLOAT_LITERAL:fl {:RESULT = new FloatLit(fl);:}
+                  | INT_LITERAL: il {:RESULT= new IntLit(il);:}
+                  | BOOL_LITERAL: bl {:RESULT = new BoolLit(bl);:}
+                  | STRING_LITERAL: bl {:RESULT = new StringLit(bl);:}
+                  | NULL {:RESULT = new NullLit();:}
+                  ;
+
+
+
+class_decl      ::= CLASS ID:name BEGIN END
+                        {: RESULT = new ClassDecl(name); :}
+                  ;
+

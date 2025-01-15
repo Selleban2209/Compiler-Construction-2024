@@ -1,0 +1,13 @@
+(PROGRAM (NAME test5)
+	(PROCEDURE_DECL (NAME  Proc )
+	(PARAM_DECL (REF_TYPE
+	(NAME int ))a : int)
+	(ASSIGN (DEREF_VAR (NAME a) ) := (INT_LITERAL 42) ))
+	(PROCEDURE_DECL (NAME  main )
+	(VAR_DECL  (NAME 
+	(NAME int ) : a)
+ )
+	(ASSIGN (NAME a) := (INT_LITERAL 32) )
+	(CALL_STMT Proc	(REF_VAR (NAME a) ))
+	(CALL_STMT printint	(NAME a)))
+)

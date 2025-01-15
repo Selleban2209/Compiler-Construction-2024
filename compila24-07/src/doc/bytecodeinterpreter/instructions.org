@@ -1,0 +1,79 @@
+* Instructions
+<<sec:bci.instructions>>
+
+Below is the table with all instructions supported by the virtual machine
+and that can be found int the bytecode library. We use $s_0$ for the top of
+the stac, $s_i$ for the next element, and so on. When the symbol
+$\moredetails$ (dagger) is found after the tanme of the instruction, we
+mean that are are more details on the types of what is on the stack at the
+end of this section (look up the instruction there).
+
+
+** Summary of the instructions 
+
+
+
+*** Binary operators
+
+
+They require two values on the stack and leave one there. They have /no/
+extra value. There are the following 14 binary operators: ~ADD~, ~AND~,
+~DIV~, ~EQ~, ~EXP~, ~GT~, ~GTEQ~, ~LT~ ~LTEQ~, ~MUL~, ~NEG~, ~NOR~, ~OR~,
+~SUB~.
+
+*** Unary operators
+
+
+
+    
+The numbers correspond to the /opcodes/.    
+   
+ #+ATTR_LATEX: :environment longtable :align |l|c|p{3.5cm}|p{3cm}|p{3cm}|
+| <6>                   |     | <10>                                                                                                    | <10>                                                                        |                                                          |
+| operator              | nr. | extra bytes                                                                                             | before                                                                      | after                                                    |
+|-----------------------+-----+---------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------+----------------------------------------------------------|
+| ~ADD~ $\moredetails$  |  01 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: int, float, or string      | $s_1+s_0$                                                |
+| ~AND~                 |  02 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: bool                       | $s_1\land s_0$                                           |
+| ~CALL~ $\moredetails$ |  03 | 2 bytes (short), with the index (id) of the function                                                    | the parameters from the left $s_n$ to the right $s_0$                       | value returned, if any                                   |
+| ~DIV~ $\moredetails$  |  35 | none                                                                                                    | the dividend $s_1$ and the divisor $s_0$, both int or float                 | $s_1/s_0$                                                |
+| ~EQ~ $\moredetails$   |  04 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: int, float, or bool        | a boolean                                                |
+| ~EXP~ $\moredetails$  |  05 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: int or float               | a float, result of $s_1^{s_0}$                           |
+| ~GETFIELD~            |  06 | 4 bytes (2 shorts), index of the field within the struct and the index (id) of the struct               | reference to the struct  $s_0$                                              | the value of the field, if $s_0$ is not a null reference |
+| ~GT~                  |  07 | none                                                                                                    | first operand $s_1$, second operand $s_0$. Both: int or float               | a boolean, result iff $s_1 > s_0$                        |
+| ~GTEQ~                |  31 | none                                                                                                    | first operand $s_1$, second operand $s_0$. Both: int or float               | a boolean, result iff $s_1 \geq s_0$                     |
+| ~JMP~                 |  08 | 2 bytes (short) with the position in the bytes of the function to jump to                               | none                                                                        | none                                                     |
+| ~JMPFALSE~            |  09 | 2 bytes (short) with the position in the bytes of the function to jump to                               | a boolean $s_0$. Jump only if false.                                        | none                                                     |
+| ~JMPTRUE~             |  10 | 2 bytes (short) with the position in the bytes of the function to jump to                               | a boolean $s_0$. Jump only if true.                                         | none                                                     |
+| ~LOADGLOBAL~          |  11 | 2 bytes (a short) with the index (id) of the global variable to load.                                   | none                                                                        | the value of the global variable.                        |
+| ~LOADLOCAL~           |  12 | 2 bytes (a short) with the index (id) of the local variable to load.  Remember params!                  | none                                                                        | the value of the local variable.                         |
+| ~LOADOUTER~           |  13 | 4 bytes                                                                                                 | *Not implemented in this version. No support for block structure!*          |                                                          |
+| ~LT~                  |  29 | none                                                                                                    | first operand $s_1$ and second operand $s_0$. Both: int or float            | a boolean: true iff $s_1 < s_0$.                         |
+| ~LTEQ~                |  30 | none                                                                                                    | first operand $s_1$ and second operand $s_0$. Both: int or float            | a boolean: true iff $s_1 \leq s_0$.                      |
+| ~MUL~ $\moredetails$  |  34 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: int, float                 | $s_1*s_0$                                                |
+| ~NEQ~ $\moredetails$  |  32 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: int, float, or bool        | a boolean, result of $s_1\not= s_0$                      |
+| ~NEW~                 |  14 | 2 bytes (a short) with the index (id) of the struct to create an instance of.                           | none                                                                        | a reference to the newly created struct.                 |
+| ~NOP~                 |  15 | none                                                                                                    | none                                                                        | none, the instruction does nothing                       |
+| ~NOT~                 |  16 | none                                                                                                    | a boolean, $s_0$                                                            | a boolean, $\lnot s_0$                                   |
+| ~OR~                  |  02 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: bool                       | $s_1\lor s_0$                                            |
+| ~POP~                 |  28 | none                                                                                                    | some value $s_0$                                                            | none, instruction removes the top                        |
+| ~PUSHBOOL~            |  18 | 1 (!)byte with the constant value 1 (true) or 0 (false)                                                 | none                                                                        | the boolean constant from the extra byte                 |
+| ~PUSHFLOAT~           |  19 | 4 bytes with the value of the float constant                                                            | none                                                                        | the float constant from the extra bytes                  |
+| ~PUSHINT~             |  20 | 4 byte with the value of the float constant                                                             | none                                                                        | the integer constant from the extra bytes                |
+| ~PUSHNULL~            |  21 | none                                                                                                    | none                                                                        | a null reference                                         |
+| ~PUSHSTRING~          |  22 | 2 bytes (a short) with the index (id) of the string constant                                            | none                                                                        | the string constant                                      |
+| ~PUTFIELD~            |  23 | 4 bytes (2 shorts) which are the index of the field within the struct and the index (id) of the struct. | the vaue to assign to the field $s_1$ and the reference to the struct $s_0$ | none                                                     |
+| ~RETURN~              |  24 | none                                                                                                    | a return value $s_0$ if the procedure has one                               | *not applicable*                                         |
+| ~STOREGLOBAL~         |  25 | 2 bytes (a short) with the index (id) of the global variable to store to                                | the value $s_0$ to store into the global variable.                          | none                                                     |
+| ~STORELOCAL~          |  26 | 2 bytes (a short) with the index (id) of the local variable to store to. Remember params!               | the value $s_0$ to store into the local variable.                           | none                                                     |
+| ~STOREOUTER~          |  27 | 4 bytes                                                                                                 | *Not implemented in this version. No support for block structure!*          |                                                          |
+| ~SUB~ $\moredetails$  |  33 | none                                                                                                    | first operand $s_1$, second operand $s_0$, both: int or float               | $s_1-s_0$                                                |
+
+
+
+
+
+ 
+
+** Private                                                          :private:
+
+[[file:~/cor/teaching/compila-fun/src/compiler/bytecode.ml::``Codetype'' *]]

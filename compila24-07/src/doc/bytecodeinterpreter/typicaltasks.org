@@ -1,0 +1,118 @@
+* Some typical tasks
+<<sec:typicaltasks>>
+
+
+
+This section show some of the usual tasks. As already shown, one can obtain
+instructions by instantiating the corresponding class and supplying one or
+two integer values which are the ids of procedures, structs, variables or
+something to be used when the intruction is interpreted. For instance, the
+~JMP~ instruction is created with an integer parameter which is the index
+of the instruction to be jumped to.  When an instruction is added to the
+stream of bytes, it is followed by these indices coded into $0$ to $4$
+bytes, depending on the size needed. In this way a ``byte'' can be $1$ to
+$5$ bytes long.
+
+
+** Calling a procedure
+
+The constructor of the ~CALL~ class has an integer parameter
+~funcNum~. That is the index of the procedure and can be gotten from a
+~CodeFile~ object if the procedure has been added. So a call instruction is
+created and added to the list of instructions. See the corresponding line
+in the example of Listing [[fig:bci.buildingexample]]:
+
+# More options can be separated by commas: :options numbers=left, captionpos=b
+#+ATTR_LATEX: :options firstline=15, lastline=16
+#+LABEL: fig:bci.buildingexample
+#+include: "codesnippets/simpleexample.javaoid" src java :lines "28-29"
+
+
+
+# #+begin_src 
+# test.addInstruction(new Call(test.procedureNumber("print_float")));
+# #+end_src
+
+
+
+** Jumping
+<<sec:bci.tasks.jumping>>
+
+The constructor of the ~JMP~ class has an integer parameter ~jumpTo~. This
+is the index that the instraction has in the list of the instructions of
+this procedure. To way to get the index of an instruction is to save the
+integer returned from the ~addInstruction~ method. A trick fro placing
+/labels/ in the code is to add a dummy instruction ~NOP~ at a place where
+one wants to insert a jump or wants to jump to. For example, the following
+creates the code for an infinite loop.
+
+
+
+# #+ATTR_LATEX: :options firstline=15, lastline=16 that does not work anyway
+#+LABEL: fig:bci.infiniteloop
+#+CAPTION: Infinite loop
+#+include: "codesnippets/infiniteloop.java" src java
+
+*Important:* the numbers used in the cosntructor for ~JMP~ and the
+conditional jump classes are the index of the instruction in the list of
+instructions. In this list, all instructions are considered to have size
+one. This is so that there will be no problems when replacing an
+instruction with another of a different size. When the bytecode is created
+and a new number is calculated and replaces that number (for all jumps)
+with the actual address withing the byte array, since at run-time the
+instructions with accompagnying operand values have different sizes.
+
+
+
+
+*** Java                                                            :private:
+See the code in [[file:~/cor/teaching/compila/src/bytecode/instructions/JMP.java::public class JMP extends Instruction{][JMP.java]]    
+
+*** Ocaml                                                           :private:
+
+The constructor [[file:~/cor/teaching/compila-fun/src/compiler/bytecode.ml::| Jmp][Jmp]]
+
+** Conditional jumps
+
+The work simular to unconditional jumps, but there has to be a boolean
+value on the stack, when executed.  Whether or not the jump is executed
+depends on the value of that boolean. For instance, the following creates
+the code for a do-while loop. More concretely for a loop of the form in
+some pseudo-code:.
+
+#+begin_src 
+do {
+// loop body
+} while (i<2);
+#+end_src
+
+
+
+
+# #+ATTR_LATEX: :options firstline=15, lastline=16 that does not work anyway
+#+LABEL: fig:bci.dowhileloop
+#+CAPTION: do-while loop
+#+include: "codesnippets/dowhileloop.java" src java
+
+
+** Constants
+
+...
+
+** Working with structs
+
+** Parameters and local variables
+
+** Library procedures
+<<sec:bci.tasks.libraryprocs>>
+
+
+#+index: library procedure
+
+When library procedures are needed, they may be added to the ~CodeFile~ and
+updated (the name alone is not enough), but no instruction should be added,
+The interpreter recognizes the use of a library procedure by the fact that
+it contains no instruction in the binary file (~CodeFile~).
+
+
+

@@ -1,0 +1,18 @@
+(PROGRAM (NAME test1)
+	(PROCEDURE_DECL (NAME  main )
+	(VAR_DECL  (NAME 
+	(NAME bool ) : flag)
+ )
+	(VAR_DECL  (NAME 
+	(NAME int ) : val)
+ )
+	(VAR_DECL  (NAME 
+	(NAME float ) : real)
+ )
+	(ASSIGN (NAME val) := (INT_LITERAL 42) )
+	(ASSIGN (NAME flag) := (NAME val)>(INT_LITERAL 40) )
+	(ASSIGN (NAME real) := (NAME val) )
+	(CALL_STMT printfloat	(NAME real))
+	(CALL_STMT printfloat	(NAME val))
+	(CALL_STMT printint	(NAME val)))
+)

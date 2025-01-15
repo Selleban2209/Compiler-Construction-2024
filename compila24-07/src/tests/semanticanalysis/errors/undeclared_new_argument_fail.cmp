@@ -1,0 +1,9 @@
+program undeclared_new_argument_fail
+begin
+
+    procedure main()
+    begin
+     in
+        return new foobar (* error: argument of new is not declared. *)
+    end
+end

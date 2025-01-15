@@ -1,0 +1,15 @@
+program wrong_rel_operand_type_fail
+begin
+
+    
+    procedure main()
+    begin
+        var b : bool;
+        var s : string;
+        var b2 : bool
+     in
+        s := "bad operand";   
+        b := 5 = b2  (* error: 5 cannot be compared to b2 *)
+    end
+
+end

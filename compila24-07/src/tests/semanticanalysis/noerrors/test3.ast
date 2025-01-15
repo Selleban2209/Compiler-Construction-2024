@@ -1,0 +1,12 @@
+(PROGRAM (NAME test3)
+	(STRUCT (NAME Foo)
+		(PARAM_DECL (NAME int )Attr : int)))
+	(PROCEDURE_DECL (NAME  main )
+	(VAR_DECL  (NAME 
+	(NAME Foo ) : f)
+ )
+	(ASSIGN (NAME f) := new(NAME Foo )Foo )
+	(ASSIGN (NAME f).Attr)) := (INT_LITERAL 42) )
+	(CALL_STMT printint	(NAME f).Attr)))
+	(CALL_STMT printfloat	(NAME f).Attr))))
+)

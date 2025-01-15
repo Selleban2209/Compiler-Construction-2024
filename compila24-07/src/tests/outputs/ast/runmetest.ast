@@ -1,0 +1,4 @@
+(PROGRAM (NAME runmetest)
+	(PROCEDURE_DECL (NAME  main )
+	(CALL_STMT printstr	(STRING Storst )))
+)

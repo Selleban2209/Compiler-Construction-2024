@@ -1,0 +1,37 @@
+
+* Changes from 2022 -> 2023
+
+ - perhaps change ref's to be nested (same as derefs)
+ - nothing 
+
+* Changes from 2021 -> 2022
+  Nothing
+* Changes from 2020 -> 2021
+   I don't do anything now
+* Changes from 2019 -> 2020
+
+  - multi-line comments written  ~(*~ and ~*)~ now.
+  - introduce "BOOL_LITERALS" in the grammar (no real change)
+  - variable declarations more complex: 
+        - with initialization 
+        - without type (may make type checking more complex)
+
+  - in process declaration: don't make "in" mandatory
+  - proc -> procedure
+
+* Changes from 2018 -> 2019 
+
+
+** Lexical
+
+   - new keywords FI and OD (for conditionals)
+  
+** Grammar
+
+- Make ";" as separator, not terminator 
+   (PROGRAM and PROC_DECL changed) 
+
+
+- DECL: remove ";" and the end
+- if then begin ... end  -> if then ... fi
+- while do begin .. end -> while do ... od

@@ -1,0 +1,17 @@
+program test1
+begin
+	procedure main()  (* main not capital this year *)
+	begin
+	    var flag : bool;
+	    var val : int ;
+	    var real : float
+         in
+	    val := 42;
+	    flag := val > 40;
+	    real := val; (* implicit conversion int=>float *)
+	    printfloat( real );
+	    printfloat( val ); (* implicit conversion int=>float *)
+	    printint( val )
+	end
+
+end

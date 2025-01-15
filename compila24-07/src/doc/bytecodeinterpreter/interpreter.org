@@ -1,0 +1,119 @@
+* How the interpeter works
+<<sec:bci.interpreter>>       
+
+#+index: loader 
+#+index: virtual machine
+#+index: variable pool
+#+index: procedure pool
+#+index: struct pool
+#+index: constant pool
+When the virtual machine is started, the interpreter is set up by the
+*loader.* It has a variable pool, which holds the type of each global
+variable. It has a procedure pool, which contains all the procedures: their
+parameter and local variable types, return type, and instructions. It has a
+struct pool with the layout of the structs; their names and the types (but
+not names) of the fields. It also has a constant pool with all the
+constants from the byte code file. All these pools are indexed by numbers
+(~id~ s) which are the numbers used by the instructions.
+
+#+index: allocation
+
+When the interpreter is started, space is allocated for the global
+variables and they are initialized with the initial values for their types
+(see further down for more information about initial values). The a /stack/
+and a /heap/ are created and an /activation block/ for the main procedure
+is created as well. Then the interpreter starts interpreting the byte code
+of that procedure at the first byte, setting the program counter ~pc~ to
+$0$
+
+#+index: program counter
+#+index: stack
+#+index: heap
+#+index: activation block
+
+
+The instructions do things like loading a global variable onto the stack
+(~LOADGLOBAL~), The ~LOADGLOBAL~ instructions has 2 extra bytes which
+contain the id of the variable to push to the stack from the global
+variables. When that instruction is performed, the program counter ~pc~
+must be incremented by 3 to move to the next instruction. The increment
+differs from instruction to instruction and is listed as the /size/ in the
+table with all instructions in Section [[sec:bci.instructions]]. Another
+instruction is ~ADD~ for addition. When that is interpreted, the two values
+on top of the stack are added up. Which kind of addition is done depends on
+the types of the two summands on the stack, determined at run-time. The
+result of the addition is pushed to the stack, and since the size is only
+one (the instruction byte only), 1 is added to the program counter.
+
+
+#+index: block level
+
+*Block levels* are *not supported*X by the virtual machine and only either
+global or else local variables can be accessed (~LOADGLOBAL~, ~LOADLOCAL~,
+~STOREGLOBAL~, ~STORELOCAL~). All names for procedures, structs, and
+variables must be /unique/. A procedure must always end with a ~RETURN~
+instruction. If a procedure found in the binary file at loadtime is without
+instructions, it is assumed to be a library procedure and a call to it
+results in a lookup using a table of library procedures.
+#+index: library
+
+#+index: initial value
+All variables (global and local ones, as well as field in structs) are
+allocated with initial values, which depend on their types. An integer is
+set to $0$ a float to $0.0$, a string to the empty string, and a reference
+is set to the null reference.
+
+** Calling a procedure
+
+#+index: procedure call
+
+A procedure is called with the ~CALL~ insturction. The byte instruction is
+followed by the index of the procedure being called. The interpreter
+locates the procedure by using the intext, creates an /activation block/ from
+the information it has, initializes the local variables, saves the program
+counter, and sets the program counter to the first byte of the called
+function.
+
+** Return 
+#+index: return 
+
+The activation blcok is popped off the stack and the program counter is set
+to where it was before the corresponding call. The return value, which the
+called precedure left on the statck, is again left on the top of the stack
+for the calling procedure.
+
+
+** Jumping
+
+#+index: jump
+
+Jumping is simply done by setting the program counter to the byte with the
+number that accompagnies the jump instruction. This is always a local
+address /within/ a procedure's instruction bytes.
+#+index: local address
+
+
+** Treating records
+*** Allocating a struct on the heap
+
+#+index: struct
+When a struct is allocated on the heap, using the ~NEW~ instruction, a
+reference is left on the stack that can be passsed around and saved in
+variables. The ~NEW~ instruction is followed by the index of the struct
+type to allocate.
+
+
+*** Get and put fields
+
+#+index: field
+
+The instruction ~GETFIELD~ is followed by the index of the struct and the
+index of the field within the that stuct. When it is interpreted, the
+interpreter assumes that a reference to the struct is on top of the stack
+and that reference is then popped off from the stack, The heap is
+instructed to get the value of the field witin the struct and the
+interpreter pushes the value of the field onto the stack, If the reference
+is the null reference, the interpreter aborts with an error message.
+
+
+

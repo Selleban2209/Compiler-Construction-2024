@@ -1,0 +1,541 @@
+\documentclass[10pt,freeform]{handout}[2014/08/13]
+
+\input{coursedata}
+\input{preamble}
+\pgfdeclareimage[height=2.4cm,interpolate=true]{uio}{logos/uiologo}%% relative
+%\usepackage[german]{babel} 
+%\usepackage{german}
+
+\handouttitle{Oblig 1}
+\handoutnumber{1}
+%\issuedate{12.\ 02.\ 2019}
+%\issuedate{03.\ 02.\ 2020}
+%\issuedate{09.\ 02.\ 2021}
+%\issuedate{8.\ 2.\ 2022}
+%\issuedate{10.\ 2.\ 2023}
+\issuedate{12.\ 2.\ 2024}
+\topic{---}
+
+
+
+
+\begin{document}
+\thispagestyle{empty}
+
+\section{Official grading guidelines}
+\label{sec:official-info}
+
+
+
+
+\hrulefill{}
+
+The \textbf{deadline/frist}  for the oblig is
+
+\begin{quote}
+  \textbf{\deadlineone, 23:59} %% 31 March is Ostern
+\end{quote}
+
+Requirements:
+
+
+\begin{itemize}
+\item the test program parses 100\% ok (see below)
+\item the printed AST reflects the correctly parsed structure (especially,
+  the correct associativity and precedence). The exact same formatting as
+  in the provided illustration is not required; reasonable deviations are
+  fine.
+\item follow the instructions under ``What and how to  hand-in''
+\item the solution needs to compile and run \emph{at the UiO
+    pool}.\footnote{Statements like ``but on my laptop it worked, I can show
+    you'' don't cut it \ldots.} Test it!
+\end{itemize}
+
+\hrulefill
+
+
+
+
+\section{What and how to hand in}
+\label{sec:what-how}
+
+
+\subsection{Git}
+\label{sec:git}
+
+
+
+We use
+\begin{quote}
+  \textbf{git}   
+\end{quote}
+to hand in the obligs and the two deliverables are just two ``milestones''
+in your project. We encourage working in groups, and git allows to share
+things.
+
+I assume that most are in principle familiar with \texttt{git}, if not, ask
+me.  We use the UiO-internal git server\footnote{Actually, it's the UiO
+  enterprise github server. Github is just one particular ``web-interface''
+  on top of git which does the real work; there are also alternatives to
+  github (and git) but for uniformity, we stick to the UiO github server.}
+
+\begin{quote}
+  \url{github.uio.no}
+\end{quote}
+
+
+In order to hand-in via git, each group has to do the following steps. See
+also the top-level readme at
+\url{https://github.uio.no/compilerconstruction-inf5110/compila/} (resp. at
+the corresponding place in your clone).
+
+\begin{enumerate}
+\item everyone: if not already: create yourself an account at
+  \url{github.uio.no}. Your UiO login allows you to do that.
+\item send me an email with your name (and if you have, with the name of
+  your collaborator), so I can assign a group number.
+\item each group will get one \emph{repository}. For instance, group
+  \textbf{01} get the repository \textbf{compila24-01} etc.  I will
+  everyone to the corresponding repos as collaborator. Each repos contains
+  the same starting point, of course.
+%\item per group: \emph{create} a new \emph{project} at the github repos.
+%  If your are in group number $n$,\footnote{The project names need to be
+%    different so that, for correction, I can distinguish them by their
+%    ``name'' to avoid that all projects are called ``compila''.}
+%  \begin{quote}
+%    call your project \texttt{compila<n>}
+%  \end{quote}
+%  The ``parentheses'' \texttt{<} and \texttt{>} are \emph{not} part of the
+% name! If the group contains more than one person, the creator has to add
+%  the partner as \emph{collaborator} to the project.\footnote{It's not that
+%    the one creating the project ``owns'' it, the collaborators are
+%    \emph{peers} (as in peer-to-peer). As you know, in git, everyone works
+%    on a cloned copy of the respository, so at the end of the project,
+%    everone can keep the own copy if wanted, not only the one who created
+%    it.}
+%\item If your project is ``private'': add me as collaborator (login
+%  \texttt{msteffen}). I don't need to contibute as collaborator, but I need
+%  access.
+% \item Send me an \emph{email} with the link, mentioning the names (and
+%   login) of the members of the group as confirmation. That needs to be done
+%   \emph{before the first oblig's deadline}. The names of the member of the
+%   group, i.e., the authors of the project, should also feature
+%   \emph{prominently} on the top-level of the repository, as in the
+%   top-level \texttt{Readme}-file.
+\end{enumerate}
+
+
+\subsection{What to include into a solution}
+\label{sec:what-include-into}
+
+
+\begin{itemize}
+\item A top-level \emph{Readme-file} containing
+  \begin{itemize}
+  \item names and emails of the authors
+  \item easy instructions how to build the compiler and how to run it.
+  \end{itemize}
+  The top-level Readme should describe in a concise manner instructions for
+  building, installation, running, and testing your compiler in a manner
+  useful for an interested \emph{user}. The target audience is a
+  master-level computer science student or someone how is not afraid to
+  git-clone a repository (or download a jar-file or similar) and following
+  a few clearly installation steps. It should be doable ``stand-alone'',
+  i.e., without loading some files into Eclipse or similar \emph{developer}
+  tools (developer $\not=$ user). The user is not expected to figure out
+  himself or herself how to install, run, and test it. The user is also
+  \emph{not} expected to be a student of this compiler course and familiar
+  with the specification of the compila-language and the
+  oblig-documentation.
+
+  It might be nice to use some \emph{markdown} format (like a
+  \texttt{Readme.md}). It's some form of poor-man's markup, and is
+  typically rendered nicely by browsers. The current top-level
+  Compila-Readme is not in the \texttt{md}-format, but in
+  \texttt{org}-format (\texttt{Readme.org}) (which is a similar, but a more
+  expressive markdown format and also rendered nicely by github, and which
+  personally I prefer for myself).
+  
+\item The information so far is for an ``interested user'' which may be an
+  outsider, maybe like a random surfer on the internet who wants to try it
+  out. Besides that, \emph{additional} information should be provided,
+  which is not relevant for an outsider, but contains ``insider
+  information'' relevant for the course's mandatory assignment and the
+  technical realization of the solution. Thus, that information might
+  perhaps better not be kept in the top level readme but at a different,
+  less prominent place or file.
+  \begin{itemize}
+  \item test-output for running the compiler on \texttt{compila.cmp} as
+    input
+  \item of course, the \emph{code} needed to run your package. That
+    includes
+    \begin{itemize}
+    \item \textsl{JFlex}-code for the scanner
+    \item \textsl{CUP}-cpde for the 2 variants of the syntax
+    \item the Java-classes for the syntax-tree
+    \item the build-script \texttt{build.xml}\footnote{Alternatively, you
+        can use a makefile if you prefer that. In that case, remove the
+        \texttt{build.xml}-file.}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+
+
+\subsection{Delivery in a nutshell}
+\label{sec:delivery-nutshell}
+
+
+Ideal would be an 
+\begin{center}
+  \textbf{out-of-the-box}
+\end{center}
+behavior. Assuming that the ``outside user'' has the required software in
+place (like \texttt{JDK} and \emph{ant}, or something rather common, and
+also is familiar with git). Then it works out-of-the-box, by following
+simple steps like for example
+
+
+\begin{verbatim}
+   git clone <repos-url>
+   cd compila24-<n>
+   ant
+   ant build
+   ant run
+\end{verbatim}
+and those steps (whatever they are) should be mentioned clearly in your
+Readme. The steps mentioned here correspond to those suggested when using
+the provided starting point, which corresponds to
+\begin{center}
+  \url{https://github.uio.no/compilerconstruction-inf5110/compila}.\footnote{Don't
+    clone this one for doing the oblig, clone the repos corresponding to
+    your group. If you clone it, it's the same information, but you have no
+    write access to the repos.}
+\end{center}
+Your solution may involve different steps (maybe \texttt{ant ast} for
+producing the require AST), and may require adaptation of \texttt{build.xml}
+(if you use ant). But you should \textbf{keep the spirit} of
+``out-of-the-box'' and ``kiss'' (keep it simple, stupid.). Remember: the
+user is always stupid...
+
+
+
+
+
+\section{Purpose and goal}
+\label{sec:x}
+
+The goal of the task is to gather practical experience of the following
+tools and techniques.
+\begin{itemize}
+\item use scanner/lexer and parser tools. In this case \texttt{JFLex} and
+  \texttt{CUP}.
+\item rewrite and massage a grammar given in one form into another one so
+  that it's accepted by the tools. In our case, the language is given in
+  some EBNF, which has to be adequately rewritten so that it can be fit
+  into the lexer and parser tools
+\item handle associativity and precedence of syntactic constructs in two
+  possible ways
+  \begin{itemize}
+  \item formulate a (unambiguous) grammar that embodies the correct
+    precendences and associativities
+  \item work with an ambiguous grammar, but instruct the parser tool (like
+    CUP) to result in an appropriate parser.
+  \end{itemize}
+\item design and implement an suitable AST data structure.  Use the parser
+  to output your AST (in case of a successful parse).
+\item do a ``\emph{pretty printer}'' in the following sense: implement some
+  functionality that \emph{outputs} and AST in a ``useful'' manner. In
+  particular, the parenthetic tree structure must be visible from the
+  output (i.e., one can see whether the associativity and the precedence is
+  correctly implemented). 
+\end{itemize}
+
+
+\section{Tools}
+%\label{sec:tools}
+
+The platform is \emph{Java}, together with the auxiliary tools
+
+\begin{itemize}
+\item \textsl{JFlex} (scanner generator in the (f)lex family)
+\item \textsl{CUP} (parser generator in the yacc family)
+\item \textsl{ant} (a kind of ``make'' tool specialized for Java)
+\end{itemize}
+
+
+The tool ant is available at the RHEL pool at IFI, for other platforms I
+don't know, but it's freely available. \textsl{JFlex} and \textsl{CUP} are
+provided as part of the repos.
+
+If, for some reason, you plan to deviate from the suggested tools, you
+\begin{enumerate}
+\item \textbf{MUST} discuss that first with the lecturer.
+\item it \textbf{must} be a platform which is freely available at the
+  university RHEL pool resp. is platform independent. Proprietary tools or
+  tools I don't have easy\footnote{I \emph{mean} easy and in the sense that
+    it does not cost money or much time to install the required environment
+    or to figure out how it all hangs together. \emph{Not} ``easy'' as in
+    ``it's really not so hard after you read some manuals and played around
+    with it for a while and with the help from the fine folks on
+    stack-exchange'' \ldots} access to cannot be used. If using Java, it
+  must compile and run without support of specific development environments
+  or ``frameworks'' besides the ones mentioned (\textsl{JFlex},
+  \textsl{CUP}, \textsl{ant}).
+\end{enumerate}
+
+
+\section{First steps (``oblig 0'')}
+\label{sec:first-steps-oblig}
+
+Apart from getting yourself a group number, git access etc. as described,
+there are things you really should do afterwards:
+
+\begin{center}
+  \textbf{Checking that on your platform, all is in place}
+\end{center}
+
+The provided readme describes the easy steps (not repeated here). It's
+about to make sure that your Java set-up works, that ant is running,
+etc. If the tests fail, \textbf{contact me} to \textbf{get that out of the
+  way} before the oblig work starts. The starting point provides those
+tests to avoid that later and shorter before the deadline, one figures out
+``something's not working on my machine''. I tested it on the university
+machines, I tested it on my laptop, but I cannot test it on other people's
+machines.  Normally it's not a problem, the stuff is supposed to be
+platform independent, but ``normally ok'' means, sometimes, maybe only
+rarely, not ok, and sometimes for weird reasons.
+
+To avoid running into frustrating stupid things later is \textbf{only one
+  purpose} to run the provided the tests and make sure all is in order. The
+\textbf{other purpose} is: the tests run a lexer and a parser!  It's of
+course not the compila language, that's your task, but it shows in two tiny
+examples, how the tools operate together, and how a lex file looks and how
+a cup-file looks etc. And for that:
+
+\begin{center}
+  \textbf{Do that checks immediately} even if you don't plan to start on
+  the content your oblig right away.
+\end{center}
+It's just a test that all is in place.
+
+Talking about how to tackle practical aspects of the oblig(s) and
+organizing the task. You may read the advice I typed up last year about that
+
+\begin{center}
+  \url{https://martinsteffen.github.io/compilerconstruction/howtowriteaparser/}
+\end{center}
+
+% Sometimes, groups or individuals work on the conceptual part of the
+% compiler (like writing the lex-file or the grammar) which is of course very
+% important. But postponing to actually \textbf{check} whether it ``runs'' or
+% ``fit together'', which may result in hectic before the deadline.
+
+
+
+
+\section{Task more specifically: Syntax check and parsing}
+\label{sec:task-more-spec}
+
+
+The overall task is to 
+
+\begin{quote}
+  implement a parser for the \textsl{Compila 24} language.
+\end{quote}
+The language specification is given in a separate document. Oblig 1 is
+concerned with checking \emph{syntactic correctness}, which means, not all
+of the language specification is relevant right now: semantic correctness,
+type checking etc. will become relevant only later for the second oblig.
+
+
+\subsection{Syntax tree}
+\label{sec:syntax-tree}
+
+The result of a successful parse is an \emph{abstract syntax tree}. That
+data structure needs to be appropriately ``designed''. In a Java
+implementation, that involves the definition of appropriately chosen
+classes arranged in some class hierarchy. Make also use if \emph{abstract
+  classes}. In the lecture, there had been some ``design guidelines'' that
+may be helpful. Carefully chosen names for classes will help in a
+conceptually clear implementation. A definitely \emph{non-recommended} way
+is to have one single class \texttt{Node} lumping together all kinds of
+nodes and syntactic categories in the syntax tree.
+
+
+
+
+
+
+
+
+
+\subsection{Print out of the AST}
+\label{sec:print-out-ast}
+
+
+The AST should be ``printed''. The easiest and recommended form of printout
+is in \emph{prefix form}. Under \texttt{material/sample-compila-ast}, there
+is an example compila input file and a corresponding file containing a
+possible output. The two files are called
+
+\begin{itemize}
+\item \texttt{complexaddition.cmp}
+\item \texttt{complexaddition.ast}
+\end{itemize}
+
+
+Note: the two files are meant as \emph{inspiration.} Each year the syntax
+of \textsl{compila} slightly changes (wrt. keywords, associativity etc). So
+the syntax is \textbf{not 100\%} in accordance with the 2024 version (but
+pretty comparable).
+
+The one that \textbf{should actually be used} for this task (AST-printing)
+is the following:
+
+\begin{quote}
+  \texttt{./src/tests/fullprograms/complexaddition.cmp}  
+\end{quote}
+
+and this one should be consistent with this year's grammar (fingers
+crossed).
+
+
+
+It's allowed (but not necessary) to print it in other forms than the prefix
+form used in the inspiration. But the output must indicate the AST in
+readable form (``readable'' as in human-readable that is \ldots). Note, the
+task is not that the output is a syntactically correct \textsl{compila}
+program again (that might be a so-called formatting tool or a
+pretty-printer), we just need a way to look at the syntax tree, which comes
+in handy for debugging,
+
+
+%\bibliographystyle{apalike}
+%{\small
+% \bibliography{string,semantics,crossref}
+%% \bibliography{extracted}
+% }
+
+\subsection{Two grammars}
+\label{sec:two-grammars}
+
+
+As mentioned shortly, the task requires 2 grammars, representing 2 ways
+dealing with precendence and associativity.
+
+\begin{enumerate}
+\item an \emph{unambiguous} grammar resolving precedence and associativity
+  by ``baking it in'' directly into the grammar. The grammar is in plain
+  BNF (in the form required by the tools)
+\item the second grammar is ambiguous and relies on \emph{CUP} to resolve
+  the associativity and precendence. This second grammar will probably look
+  nicer and will be shorter. It's therefore probably best to take that one
+  as \emph{default} (for instance for oblig 2).
+\end{enumerate}
+
+\subsubsection*{Comparison and discussion}
+\label{sec:comparison}
+
+Investigate and characterize \emph{conflicts} of the \emph{original}
+grammar. How many states do the 2 generated CUP grammars have? That
+requires a look into the CUP-generated code. Discuss also whether the
+choice of the two grammars influences the generation of the AST: is one of
+the two approaches easier to work with when it comes to generate an AST
+(resp. your chosen AST data structure.
+
+
+\textbf{Note:} It's not required to provide code to build \emph{two}
+versions of AST-generation, one is enough. In other words, for one of the
+two grammars, you don't need ``action code'' in the grammar to produce an
+AST, plain \emph{checking} is sufficient.
+
+\subsection{Lexical analysis}
+\label{sec:lexical-analysis}
+
+As mentioned, \textsl{JFLex} is the tool of choice for lexical analysis. It
+delivers a token to the parser via the method \texttt{next\_token()}.  
+
+As far the the ``theoretical'' task concerning \textsl{compila 24} is
+concerned, the lexer is responsible for ignoring comment, white-space etc,
+find keywords and the like.
+
+Besides that, one has to make the parser and the lexer ``work together''
+hand in hand. Information about that can be found in the corresponding
+manual. There should also be examples for inspiration. A crucial ingredient
+is the interface \texttt{java\_cup.runtime.Scanner} which needs to be
+implemented by the actual scanner. The scanner will hand over tokens of the
+type \texttt{Symbol} and one can use \texttt{Symbol.value} to pass ``text''
+or other objects from the lexer to the parser.
+
+
+
+\subsection{Error handling}
+\label{sec:error-handling}
+
+Error handling can be done simple: When hitting an error, parsing should
+stop (as opposed to try to continue and give back an avalanche of
+subsequent errors). Some meaningful error message (at least wrt. which
+syntactic class caused the error) would be welcome, as opposed to a plain
+``sorry, bad program''. It's not required to give back line numbers
+referring to the original source code or positions in the original
+file. In practice that's definitely useful (and not very hard either), but
+not required for the oblig.
+
+
+
+
+\subsection{Tests}
+\label{sec:tests}
+
+For testing, there is a bunch of files under
+
+\begin{quote}
+  \texttt{./src/tests}
+\end{quote}
+
+They are supposed to contain syntactically correct programs for this year's
+version, with exception of the ones under
+\begin{quote}
+  \texttt{./src/tests/errors}
+\end{quote}
+Later for \textbf{oblig 2} there will be more tests, especially for testing
+type checking and code generation. 
+
+
+For \textbf{oblig 1}, you are requested to generate an ast for
+\begin{quote}
+  \texttt{./src/tests/fullprograms/complexadditions.cmp}  
+\end{quote}
+as part of the oblig, as mentioned, but you may of course use the other
+test program as well to see how robust your implementation is. 
+
+% Especially erroneous programs later will become relevant for oblig2,
+% when we do type checking; there, some syntactically ok programs should
+% be flagged as erroneous by the type checker.
+
+
+
+
+
+
+
+\section{Resources}
+\label{sec:resources}
+
+The web-page (the git-one) will contain also links to \textsl{JFlex}
+\textsl{CUP} and corresponding manuals.
+
+
+
+
+
+
+\end{document}
+
+Model Checking Cache Coherence Protocols for Distributed File Systems
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

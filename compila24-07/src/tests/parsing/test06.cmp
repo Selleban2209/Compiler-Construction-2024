@@ -1,0 +1,29 @@
+program p begin             (* some procedure declarations *)
+  procedure a () begin      (* some with "in" some without *)
+  end;
+  procedure a () : int 
+  begin 
+  in 
+  end;
+
+  procedure a (a:int) : int 
+  begin
+  end;
+
+  procedure a (a:int,b:bool) : int 
+  begin
+  end;
+
+  procedure a (a:int) : int 
+  begin 
+    var x : int;
+    struct x {} ;
+    procedure b (b:int)   (* nesting: syntactically allowed *)
+    begin                 (* but later forbidden or ignored *)
+      in
+    end
+  in
+    x := 5;
+    x := 5
+  end
+end  

@@ -1,0 +1,257 @@
+#+LINK: srcruntime ../../runtime/%s
+#+LINK: srcbytecode ../../bytecode/%s
+
+
+* Building a complete program
+<<sec:bci.building>>     
+
+We have shown the basics of how to build a byte-code program (binary file)
+using the byte-code library. In this section we will show some of the
+details by covering each of the classes of the library. Details about all
+the instructions will come in Section [[sec:rememberthis]].
+
+The main parts for creating a new program are: create an object of the
+class ~CodeFile~. Afterwards add the procedures, i.e., objects of class
+~CodeProcedure~, structs, i.e., objects of class ~CodeStruct~, and so
+on. Finally, when calling the ~getBytecode()~ procedure, the bytecode
+library will generate the actual bytes from the object hat have been created
+and from the ``properties'' given to those objects. Note that there a
+/four/ steps to create a procedure (or a struct, or global variable).
+
+|    |                                                       |                      |    |
+|----+-------------------------------------------------------+----------------------+----|
+| 1. | /add/ the definition to the ~CodeFile~ object         | ~addProcedure~.      | I  |
+| 2. | /create/ the ~CodeProcedure~ object (say ~p~)         | ~new CodeProcedure~. | II |
+| 3. | /add/ ``properties'', such as  instructions, to ~p~   |                      | II |
+| 4. | /update/ the ~CodeProcedure~ object in the ~CodeFile~ | ~updateProcedure~    | II |
+
+
+
+
+These four standard steps are illustrated in slightly more detail in the
+following example.
+
+** Creating code for a procedure: A small example.
+
+The example code creates a "*code file*" and first adds the name of a
+*library* procedure to be used.  It then adds 4 items, in preparation for
+the follow-up steps, which add the code for those items. Added is procedure
+~Main~, a global variable ~myGlobalVar~, a procedure ~test~ and a struct
+~Complex~. That is done in section (I).
+
+
+In the next steps, the procedure ~Main~ is properly defined and the
+corresponding information is added. The main procedure has the void return
+type, no parameters, no local variables and the body consists of a single
+instruction, namely ~return~. The code of part (II) corresponds to the
+steps 2.-4. for the 4 steps mentioned above, the first step for the
+procedure has been done in "section" (I).
+
+The global variable is typed with the struct type ~Complex~ (III).
+
+The procedure ~test~ has 2 parameters (of type float and a reference type
+to ~Complex~). The procedure loads the first parameter onto the stack and
+then calls the (library) procedure ~print_float~ to print its value
+(IV). The struct ~Complex~ is created and the two fields, both of floating
+point type, are added to it (V). The procedure ~print_float~ used in the
+program is a library procedure. Nonetheless, it needs to be added, but
+without instructions (VI). See also Section
+[[sec:bci.tasks.libraryprocs]]. Finally, the mandatory main method is set,
+before the bytecode can be extracted to a file (VII). Section
+[[sec:bci.building.generatedcode]] later shows the generated machine code for
+this example.
+
+#+CAPTION: 4 steps to generate code for a procedure
+#+LABEL: fig:bci.buildingexample
+#+include: "codesnippets/simpleexample.javaoid" src java
+
+
+*** Class ~CodeFile~
+
+
+#+index: error: classes are not created
+
+This is the class which generates bytecode, and all elements must be added
+to the corresponding object. It also provides the service of returning
+*indices* to the given elements, as we will see later. Those indices are
+needed when instruction classes are created. They reference the elements
+within the program. Adding something to a ~CodeFile~ object is done in *two
+stages*; first, the element is added using something like the
+~addProcedure~ procedure, supplying only the name. Then later, the
+~updateProcedure~ must be called with a reference to the actual procedure
+object. After a procedure has been added (but before it has been updated)
+its index can be found and used, for example to create a call to it, as we
+will see.
+
+
+An object of the ~CodeFile~ class is typically seen by all the nodes in the
+abstract syntax tree, by for example passing around a reference to it. An
+element in the syntax tree is typically responsible for adding itself to
+the compiled result by using the procedures of the ~CodeFile~ or
+~CodeProcedure~ classes.
+
+#+index: index
+
+#+index: global variable
+A /global variable/ is added by using the procedure ~void
+addVariable(String name)~. After a global variable has been added, its
+index (~id~) in the program may be found using its name, calling the
+procedure ~int globalVariableNumber(String name)~ The type of the variable
+/must/ be supplied /before/ the bytecode is generated. The generation is
+done by calling the method ~void updateVariable(String name, CodeType
+type)~. All global variables must have unique names.
+
+#+index: procedure
+
+A /procedure/ is added by using the procedure ~void addProcedure(String
+name)~ After a procedure has been added, its index (~id~) in the program
+can be found using its name, calling the method ~int procedureNumber(String
+name)~. The details of the procedure must be supplied before the bytecode
+is generated. That  is done by invoking the method ~public void
+updateProcedure(CodeProcedure codeProcedure)~.
+
+#+index: struct
+
+For a struct, there are analogous procedures ~public void addStruct(String
+name)~, ~int structNumber(String name)~, and ~void updateStruct (CodeStruct
+codeStruct)~.  In addition, getting the index of a field in a struct is
+done by calling ~int fieldNumber(String structName, String varName)~ using
+the name of the struct and the name of the field.
+
+A ~string constant~ is added by using the procedure ~int
+addStringConstant(String value)~. Note that this procedure returns the
+index (~id~) of the constant /directly/ and there is no procedure to fetch
+the index of a constant later.  The index is used for string literals by
+the compiler.
+
+#+index: string literal
+
+After all the elements are added, it is important to let the interpreter
+know which procedure to start with. This is done by using the the name of
+the procedure (typically ~"main"~) and calling ~void SetMain(String name)~.
+
+#+index: main procedure
+
+*** Class ~CodeProcedure~
+
+A procedure in the program is created by first adding its name to the
+~CodeFile~ object, then creating an object of this class, then adding the
+parameters, local variables, and instructions to the object, and finally by
+updating the ~CodeFile~ object with the ~CodeProcedure~ object.
+
+#+index: procedure object
+A /procedure object/ is creatd by the constructor ~CodeProcedure(String
+name, CodeType returnType, CodeFile codeFile)~. This takes the unique name
+of the procedure, the return type (see ~CodeType~ below) and the code file
+that it will be added to. The reason why the code file is included is that
+it is needed by the procedure object to provide some of the code file
+services (relying on a delegation pattern mechanism).
+
+#+index: delegation
+
+#+index: parameter
+#+index: local variable
+
+/Parameters/ and /local variables/ are added by the procedures ~void
+addParameter(String name, CodeType type)~ and  ~void addLocalVariable(String
+name, CodeType type)~.
+
+#+index: instruction
+
+#+index: replace an instruction
+#+index: instruction!replacement
+An /instruction/ is added to the procedure object with ~int
+addInstruction(Instruction instruction)~. The return value of this method
+is the /index/ of the instruction in the procedure's list of
+instructions. Sometimes one wants to /replace/ and earlier
+instruction. This is done by using ~void replaceInstruction(int place,
+Instruction instruction)~. For instance, one may insert temporarily a ~NOP~
+instruction to be replaced later by a jump instruction ~JMP~. Read more in
+Section  [[sec:bci.tasks.jumping]] on jumps. A procedure body cannot be
+completely empty, it must at least contain one final ~RETURN~
+instruction.
+#+index: return
+
+#+index: jump
+
+#+index: index
+
+The /index/ of a variable or a parameter can be found by using ~int
+variableNumber(String name)~. Note that local variables mus have unique
+names in any block, and that includes the parameters. The parameters are
+given the first indices from left to right, starting from ~0~. The
+(remaining) local variables are given the subsequent indices in the order
+of their declaration.
+
+A ~CodeProcedure~ object can find the indices of elements using its
+~CodeFile~ object, so it also has the procedures ~globalVariableNumber~,
+~procedureNumber~, ~structNumber~, and ~fieldNumber~. It also has and
+delegates the ~addStringConstant~ procedure.
+
+
+*** Class ~CodeStruct~
+
+#+index: struct
+
+A /struct/ is created with the constructor ~CodeStruct(String name)~
+providing the name of the struct. A field is added to the struct by using
+~void addVariable(String name, CodeType type)~. To retrieve the index of a
+field added to the struct, one may use ~int fieldNumber(String name)~. See
+also the ~fieldNumber~ procedure of ~CodeFile~.
+
+
+*** Sub-package for types
+**** Class ~CodeType~
+#+index: type
+
+This is an abstract class and it has as concrete sub-classes the different
+classes of types: ~VoidType~, ~BoolType~, ~IntType~, ~FloatType~,
+~StringType~ and ~RefType~. The void type is used for procedures that don't
+return a value and the reference type is for references to structs (i.e.,
+records).
+
+
+#+index: basic type
+#+index: type!basic
+The basic types have a /singleton/ object (for instance ~StringType.TYPE~),
+which is used as actual parameter whenever needed, for example to define
+the return type of a procedure or the type of a field in a struct.
+
+
+The ~RefType~ class is a little different. There is no singleton and its
+constructor has an integer parameter which is the /index/ of the struct for
+which this type is a reference. The ~RefType~ is use by creating an object
+with the index (~id~) for the struct as the single parameter. One may make
+many such objects for the same type (the same index) if that is more
+convenient, or just reuse the same object for the type. An object of the
+reference type to the struct ~"Complex"~ mentioned before, for example, can
+be created like this.
+
+
+#+begin_src java
+CodeFile cf = <...> ;
+...
+cf.addStruct("Complex");
+...
+RefType rt =  new RefType(cf.structNumber("Complex");
+#+end_src
+
+
+
+** Virtual machine listing
+<<sec:bci.building.generatedcode>>   
+
+
+The following shows the code corresponding to the example from earlier in
+the section.
+
+#+include: "example.bin" src 
+    
+**** Private                                                        :private:
+
+
+The bin files are binary, I need a dis-assembler, perhaps.
+
+
+
+

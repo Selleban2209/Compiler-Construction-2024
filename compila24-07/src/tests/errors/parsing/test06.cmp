@@ -1,0 +1,5 @@
+program p begin   (* testing proc declarations *)
+  procedure a (a:int,b:bool,) : int   (* that should not be allowed *)
+  begin 
+  end
+end  

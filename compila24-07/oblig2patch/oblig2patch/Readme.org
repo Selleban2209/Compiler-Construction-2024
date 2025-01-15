@@ -1,0 +1,130 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t
+#+OPTIONS: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+OPTIONS: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t
+#+OPTIONS: tags:nil tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+TITLE: Oblig 2 "patch" 
+#+DATE: <2023-02-03 Thu>
+#+AUTHOR: Martin Steffen
+#+EMAIL: msteffen@ifi.uio.no
+#+LANGUAGE: en
+#+SELECT_TAGS: export slides B_frame B_againframe
+#+EXCLUDE_TAGS: private noexport B_note todo handout ARCHIVE script
+#+CREATOR: Emacs 25.3.1 (Org mode 9.1.6)
+
+
+* Intro
+
+The repos for oblig 1 has been "copied" as a starting point for the
+groups. It contained already at that time *more* than was needed for
+oblig 1.
+
+However, some things that were provided at that point need
+*replacement*. For instance, the ~build.xml~ file provided at that time was
+tailored towards oblig 1, not for the oblig 2 now. So it needs to be
+extended and for that a new version of a ~build.xml~ provided.
+
+Tests were already included (but not used in oblig 1). This time, they are
+/more/ official, mandatory test files. For oblig 1, it was basically only
+the ~complexaddition.cmp~ file that one had to use, the other test files
+were there and could be used, for smaller tests and debugging.
+
+
+Anyway, this newer and updated information is called *patch* here. Since
+the groups' reposes are no longer coupled to the course's repos
+[[https:github.uio.no:msteffen/compila]], I could push it to your repos'es, but
+I am not sure if everything is up-to date and I don't want to create git
+merge conflicts. Therefore, I just point to a zip-file.
+
+
+* What to do?
+
+
+
+Note: as I don't know to which extent the original structure I had prepared
+has been changed in a given group during oblig 1, this material is *NOT*
+expected to work ``out-of-the-box'' for everyone (or even the
+majority). It's meant as /guideline/ of what to to. When unclear, ask.
+
+The oblig itself is specified as the second part of the Compila 24 document
+(type checking and code generation). Therefore, also the documentation how
+do make use of the given library needs to be consulted. The documentation
+is (in your original project) under ~./doc/~ (when seen from the root of
+the repos):
+
+
+
+
+#+begin_example
+ ./doc/languagespec
+ ./doc/obligs
+#+end_example
+
+If you did not delete that part from your repos, it should still be
+there. But there is a bit of new info concerning oblig 2 in the patch
+(handout + slides).  Otherwise it's browsable at
+
+    https://github.uio.no/compilerconstruction-inf5110/compila
+
+
+So much for the background information. As far as code is concerned given
+*in this patch*
+
+** The code of this patch
+
+
+  - ~./src~ : There is a "new" version of the ~Compiler.java~ file.  It
+    is basically an extension the the older file, that was provided as
+    starting point. Basically, you should adapt your ~Compiler.java~ file
+    accordingly (most people made adaptations from the starting version, so
+    that's one of the points where you cannot expect that the newly
+    proposed inspirational version will just work for you directly. There
+    is also a directory ~test-asinspiration~: that shows Java code, that
+    allows to *automate tests*.  Part of the oblig 2 is to run some tests to
+    see that, especially type checking works. That should be automated, so
+    that the all programs in a given directory or similar are all parsed
+    and type checked.  
+
+    Move or copy the directories to a place that suits your compiler and
+    check them in there (perhaps as subdirectories of src, but some people
+    changed also that).
+
+
+   - ~./build.xml~ : analogous remarks also here. You will perhaps have worked with
+                   ~ant~ (as suggested) and may have taken the previous
+                  ~build.xml~ as starting point (and probably adapted things here and there). 
+                  Again: this one is a suggestion on how to extend your build-file to support the new
+                  needs and target. 
+
+		   In particular, code generation and the tests etc. MUST
+                   BE AUTOMATED and executable (for me) in an EASY manner.
+
+
+
+   
+** Test files
+
+Already in the oblig 1 version, there had been files that one could use for
+testing. Officially required was only semanticanalysis
+~<compiladirectory>/src/tests/fullprograms/complexaddition.cmp~.
+
+Now, for oblig2, relevant are
+
+
+
+           1) type checker and the semantic analysis phase ~src/tests/semanticanalysis~
+	   2) code generator ~src/tests/fullprograms/runme.cmp~
+
+
+
+There are more tests, you can use at your will, maybe you had already. Or maybe you used additionally your own tests.
+
+
+Those tests should already been included in your repos (unless you deleted
+them as superfluous for oblig 1, in which case you need to clone my repos
+again, and copy and include them back). 
+
+
+
+      
+
+

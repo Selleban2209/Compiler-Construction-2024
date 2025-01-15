@@ -1,0 +1,21 @@
+(PROGRAM (NAME R)
+	(VAR_DECL  (NAME x : 
+	(NAME  ))
+ )
+	(STRUCT (NAME abc)))
+	(VAR_DECL  (NAME x : 
+	(REF_TYPE
+	(REF_TYPE
+	(NAME  ))))
+ )
+	(STRUCT (NAME ef)
+		(PARAM_DECL (TYPE  )x : int)))
+	(STRUCT (NAME a5)
+		(PARAM_DECL (TYPE  )x : int)
+		(PARAM_DECL (REF_TYPE
+	(NAME  ))y : null)))
+	(VAR_DECL  (NAME x : 
+	(REF_TYPE
+	(NAME  )))
+ )
+)

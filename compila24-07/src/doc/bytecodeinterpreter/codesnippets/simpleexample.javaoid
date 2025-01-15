@@ -1,0 +1,53 @@
+// Make code:
+CodeFile codeFile = new CodeFile();
+codeFile.addProcedure("printFloat")
+
+//-------  (I) ---------------------
+codeFile.addProcedure("Main");
+codeFile.addVariable("myGlobalVar");
+codeFile.addProcedure("test");
+codeFile.addStruct("Complex");
+//-------- (II) --------------
+CodeProcedure main = 
+    new CodeProcedure("Main", 
+		      VoidType.TYPE, 	     
+		      codeFile);
+main.addInstruction(new RETURN());
+codeFile.updateProcedure(main);
+
+//--------- (III) -------------
+codeFile.updateVariable("myGlobalVar",
+		         new RefType(codeFile.structNumber("Complex")));
+//---------- (IV) -------------
+CodeProcedure test = new CodeProcedure("test",
+				       VoidType.TYPE,
+				       codefile);
+test.addParameter("firstPar", FloatType.TYPE);
+test.addParameter("secondPar", new RefType(test.structNumber("Complex")));
+test.addInstruction(new LOADLOCAL(test.variableNumber("firstPar")));
+test.addInstruction(new CALL(test.procedureNumber("print_float")));
+test.addInstruction(new RETURN());
+codeFile.updateProcedure(test);
+
+//---------- (V) ----------------
+
+CodeStruct complex =  new Codestruct("Complex");
+complex.addVariable("Real", FloatType.TYPE);
+complex.addVariable("Imag", FloatType.TYPE);
+codeFile.updateStruct(complex);
+
+//----------- (VI) --------------
+CodeProcedure printFloat = new CodeProcedure("print_float",
+					     VoidType.TYPE, 
+					     codeFile);
+test.addParameter("f", FloatType.TYPE);
+codeFile.updateProcedure(printFloat);
+
+//----------- (VII) --------------
+codeFile.setMain("Main");
+byte[] bytecode = codeFile.getBytecode();
+//.............. write the bytes to a file
+
+
+
+

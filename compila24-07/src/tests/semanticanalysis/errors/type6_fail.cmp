@@ -1,0 +1,8 @@
+program type6_fail
+begin
+    procedure main()
+    begin 
+    in
+       42.Foo := 42 (* error: 42 has no field *)
+    end
+end

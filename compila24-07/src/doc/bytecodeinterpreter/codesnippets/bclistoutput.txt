@@ -1,0 +1,12 @@
+Loading from file: ./Simple.bin
+Variables:
+0: var Complex dummy
+Procedures:
+0: Main()
+   0: return
+Structs:
+0: Complex
+     0: float
+     1: float
+Constants:
+STARTWITH: Main

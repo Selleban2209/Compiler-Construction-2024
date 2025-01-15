@@ -1,0 +1,154 @@
+<!-- Build file (as inspiration) for INF5110/INF9110 obligatory exercise -->
+<project name="INF5110/INF9110 Obligatory exercise" default="menu" basedir=".">
+  <presetdef name="javac">
+    <javac includeantruntime="false" />
+  </presetdef>
+  <target name="menu" >
+		<echo>Targets                             </echo>
+		<echo>clean                		- Cleans up the project</echo>
+		<echo>build                		- Build compiler</echo>
+		<echo>compile                		- Compile java files</echo>
+
+		<echo>run                  		- Run compiler</echo>
+		<echo>compile-test              		- Run compiler for tests</echo>
+		<echo>test                 		- Run tests</echo>
+		<echo>compile-runme             		- Compile runme testprogram</echo>
+		<echo>run-runme          			- Run runme testprogram</echo>
+		<echo>list-runme          		- Lists runme (not really sure what this means)</echo>
+	</target>
+
+	<!-- Path definitions -->
+	<path id="path-cup">
+		<pathelement location="./lib/java-cup-11a.jar"/>
+		<pathelement location="./lib/JFlex.jar"/>
+	</path>
+
+	<path id="path-run">
+		<path refid="path-cup"/>
+		<pathelement location="build/classes" />
+	</path>
+
+	<!-- Task definitions -->
+	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex" classpathref="path-cup" />
+	<taskdef classname="java_cup.anttask.CUPTask" name="cup" classpathref="path-cup"/>
+
+	<!-- Target definitions -->
+	<target name="init">
+		<!-- Directories and files that exist. -->
+		<property name="dir.base" value="${basedir}"/>
+		<property name="dir.build" value="${dir.base}/build"/>
+		<property name="dir.src-gen" value="${dir.base}/src-gen"/>
+		<property name="dir.src-examples" value="${dir.base}/src-examples"/>
+		<property name="dir.src" value="${dir.base}/src"/>
+		<property name="dir.desc" value="${dir.base}/desc"/>
+		<property name="dir.tests" value="${dir.base}/tests"/>
+
+		<!-- Directories and files to be created. -->
+		<property name="dir.classes" value="${dir.build}/classes"/>
+	</target>
+
+	<target name="clean" depends="init">
+		<delete includeemptydirs="true">
+			<fileset dir="${dir.build}" includes="**/*"/>
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${dir.src-gen}" includes="**/*"/>
+		</delete>
+	</target>
+
+	<target name="mkdir" depends="init">
+		<mkdir dir="${dir.classes}"/>
+	</target>
+
+        <!-- Generic compile target -->
+	<target name="generic-compile" depends="">
+		<javac srcdir="${dir.src-gen}" destdir="${dir.classes}" debug="true" includes="${package-name}/*.java" classpathref="path-cup"/>
+	</target>
+		
+	<!-- Generic compile AST-nodes target -->
+	<target name="generic-compile-ast" depends="">
+		<javac srcdir="${dir.src-examples}" destdir="${dir.classes}" debug="true" includes="**/*.java" classpathref="path-cup"/>
+	</target>
+        
+
+
+
+
+	<!-- Generate scanner and parser using JFlex and CUP  -->
+	<target name="generate" depends="mkdir">
+		<jflex file="./src/grammars/compila.lex" destdir="src-gen"/>
+		<cup srcfile="./src/grammars/compila.cup" destdir="src-gen" interface="true" />
+	</target>
+
+	<!-- Compile Java Files and store in /build/classes directory  -->
+	<target name="compile" depends="generate">
+	  <javac  srcdir="${dir.src}"
+		  destdir="${dir.classes}"
+		  debug="true"
+		  includes="**/*.java"
+		  classpathref="path-cup"
+		  sourcepath="${dir.src-gen}">
+	    <compilerarg value="-Xlint:unchecked"/>	    
+	  </javac>	    
+	  <javac srcdir="${dir.src-gen}"
+		 destdir="${dir.classes}"
+		 debug="true"
+		 includes="**/*.java"
+		 classpathref="path-cup"
+		 sourcepath="${dir.src}">
+	    <compilerarg value="-Xlint:unchecked"/>
+	  <!--- <compilerarg value="-Xli:unchecked"/>	-->    
+	  </javac>
+	</target>
+
+	<!-- Main target  -->
+	<target name="build" depends="compile"/>
+
+	<!-- Run the system  -->
+	<target name="run" depends="init">
+		<java classname="compiler.Compiler" classpathref="path-run">
+			<arg value="src/tests/semanticanalysis/noerrors/test5.cmp"/> 
+			<arg value="src/tests/outputs/ast/test5.ast"/>
+			<arg value="src/tests/outputs/bin/test5.bin"/>	
+		</java>
+	</target>
+
+
+	<!-- Compile test classes -->
+	<target name="compile-test" depends="mkdir">
+		<javac srcdir="${dir.src}" destdir="${dir.classes}" debug="true"
+			includes="test/*.java" classpathref="path-cup" />
+	</target>
+
+	<!-- Run tests -->
+	<target name="test" depends="compile-test">
+		<java classname="test.Tester" classpathref="path-run" >
+			<arg value="src/tests/semanticanalysis/noerrors"/>
+		</java>
+	</target>
+
+	<!-- Run compiler on example RunMe -->
+	<target name="compile-runme" depends="init">
+		<java classname="compiler.Compiler" classpathref="path-run">
+			<arg value="src/tests/fullprograms/runme.cmp"/>
+			<arg value="src/tests/outputs/ast/runme.ast"/>
+			<arg value="src/tests/outputs/bin/runme.bin"/>	
+		</java>
+	</target>
+
+	<!-- List example runme -->
+	<target name="list-runme" depends="init">
+		<java classname="runtime.VirtualMachine" classpathref="path-run">
+			<arg value="-l"/>
+			<arg value="src/tests/outputs/bin/runme.bin"/>
+		</java>
+	</target>
+
+	<!-- Run vm on example runme -->
+	<target name="run-runme" depends="init">
+		<java classname="runtime.VirtualMachine" classpathref="path-run">
+			<arg value="src/tests/outputs/bin/runme.bin"/>
+		</java>
+	</target>
+
+</project>

@@ -1,0 +1,210 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t
+#+OPTIONS: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+OPTIONS: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t
+#+OPTIONS: tags:nil tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+TITLE: Compila 24 (Language and compiler skeleton + material)
+#+DATE: <2024-02-12 Mon>
+#+AUTHOR: Martin Steffen
+#+EMAIL: msteffen@ifi.uio.no
+#+LANGUAGE: en
+#+SELECT_TAGS: export slides B_frame B_againframe
+#+EXCLUDE_TAGS: private noexport B_note todo handout ARCHIVE script
+#+CREATOR: Emacs 25.3.1 (Org mode 9.1.6)
+
+
+
+
+
+* Intro
+
+The repository host material for the /Compila 24/ compiler, which is the
+content of oblig 1 and 2 for the course "compiler construction"
+([[http://www.uio.no/studier/emner/matnat/ifi/INF5110/][INF5110]]/INF9110). The material in this repository focuses on the code
+which can be used as *starting point* for the *compiler*. It contains also
+the description and *documentation* of the oblig and the compiler. *Not*
+contained here is the compiler *lecture* (the slides, the exercises,
+organizational material, etc.).  Those are kept in the respository of the
+course itself, and the generated slides are kept in the Vortex system on
+the course's web-page.
+
+
+* Overview over the repository's structure
+
+- [[./doc]]: generated documentation
+    - language specification
+    - byte code interpreter
+    - instructions about the obligs
+
+- [[./src]]: sources (including sources of the documentation).
+
+
+- [[./src/tests]]: compila 24 programs for testing. Not all tests are already
+  relevant for *oblig 1*. The directory contains a number of subdirectories
+  for different purposes and a number of compila program. The one required
+  for *oblig 1* is
+
+       [[./src/tests/fullprograms/complexaddition.cmp]]
+
+  Further tests in there are not explicitly required to be used as part of
+  the deliverable for oblig 1. One can use them, if wished, to check one's
+  parser etc. or one can of course also set-up one's own test suite.
+  Later, for *oblig 2*, more tests will be mandatory resp. relevant (to
+  test the type checking and the code generation).
+
+- [[./oblig2patch]]: additional information and changes or updates
+     relevant for *oblig 2*. 
+
+- [[./lib]]: lexer and yaccer tools (jlex + cup), as jar files
+
+
+- [[./build.xml]]: simple /ant/ build file. Type ~ant~ in a command shell to
+  see current possible targets. One can adapt according to one's
+  needs. Also for oblig2, one will have to add more ``targets'' (because
+  then there will be more things to do, like type checking etc.)
+  Alternative ``build'' methods are allowed as well if preferred (make,
+  maven) as long as they are commonly available.
+       
+
+- [[./material]]: extra material, for example a test expression evaluator and
+  parser (a simple working example of making use of lex and yacc). It also
+  contains inspiration how a ast-printout could look like.
+
+-  [[./previoussemesters]]: for "historical" purposes only
+      
+
+- ([[./build]]): the directory is generated (if one uses the .build.xml)
+
+
+  - [[Readme.org]]: this file
+
+  - [[.gitignore]]: git administrative file: things probably not intended to be
+                checked in
+
+
+* First steps 
+
+We assume basic familiarity with git, basically how to clone commit, push
+and pull. No more advanced features need probably be used. If unfamiliar
+with the basics, contact the lecturer (early on!) to figure it out.
+
+
+** Getting a working copy of the repository (clone)
+
+Every group get their own repository, all of them initially identical. The
+first thing to do is to get a working copy of the corresponding
+repos. That's done via ~git clone~.
+
+For *group 00*, the repos is located at
+[[https://github.uio.no/compilerconstruction-inf5110/compila24-00]], and the
+corresponding clone step would be
+
+#+begin_src 
+git clone git@github.uio.no:compilerconstruction-inf5110/compila24-00.git
+#+end_src
+
+The group numbered *00* is used by the lecturer, so one has to replace *00*
+with one's own group number.
+
+
+** Check to see if everything on your system is in place!
+
+Do the following checks, to make sure that Java runs (and the classpath is
+not messed up somehow etc,). And also that ~ant~ is running (if you use that).
+
+
+
+*** Check the simple evaluator (under ~./material~)
+
+Inside the compila-directory, do
+
+
+#+begin_example
+   cd material/first-tests-simpleexpressions
+   ant 
+#+end_example
+
+#+end_src
+watch the output, and *try out* the shown targets. There is 1 target for
+cleaning up, 2 different programs that can be built and run, so altogether
+you can try out 5 targets:
+
+#+begin_example
+ ant clean
+ ant compile-example-eval
+ ant run-example-eval
+ ant compile-example-parse
+ ant run-example-parse
+#+end_example
+
+
+Note, "running" can be done successfully only after "compiling". There will
+be some warnings about repeatable-build, one may ignore them.
+
+*** Check the top-level build-file (under this directory)
+
+
+Do the same for the dummy- and skeleton-classes provided as starting point
+for the compila24 compiler. Inside the top-level compila directory, which
+contains a [[./build.xml]]-file, do
+
+#+begin_src 
+ ant   
+ ant build
+ ant run
+#+end_src
+
+
+If successful, that should generate the file ~simpledummy.ast~ under
+[[file:./src/tests/outputs/ast][<compila-root>/src/tests/outputs/ast]]. Since it will be generated, the file
+is not yet there in the fresh checkout. There might be warnings about
+``non-reproducible builds'', and some more more, depending on which version
+of Java you use. but you can ignore that.
+
+
+
+The generated ast-printout is very small, because the example grammar and
+program in the starting point is just very small; it's not a
+compila-program. Besides the ast which is generated following the described
+steps, there is also more ``realistic'' ast-printout included in the repos
+in the same directory, so it's not generated (or maybe I generated it in an
+earlier semester). It's called [[file:src/tests/outputs/ast/simpledummy-forinspiration.ast][simpledummy-forinspiration.ast]].
+
+It's meant as *inspiration* of how an output could look like. It's not the
+most beautiful output, it's more an ugly-printer rather than a
+pretty-printer output, but it would do the job. Note also: the output *does
+not 100% adhere to the 2024 syntax*, but corresponds to an earlier
+iteration. But as said, it's for inspiration.
+
+
+
+* Communication & discussion forums
+
+If encountering troubles or puzzling about how to proceed, *email* is an
+option. Besides that, the university has set up some discussion platforms
+per course that they think is useful:
+
+
+  - [[https://astro-discourse.uio.no][Astro-discourse]] : some discussion forum
+
+Earlier there had been padlet, piazza, mattermost and others, those no
+  longer exist or have not been opened 2024 for this course
+
+# We can also try git-issues.    
+
+    
+
+* Some relevant external links 
+
+
+   - [[http://jflex.de][JFlex]] in particular the [[http://jflex.de/manual.html][user manual]]
+   - [[http://www2.cs.tum.edu/projects/cup/][CUP]], also here the [[http://www.cs.princeton.edu/~appel/modern/java/CUP/manual.html][manual]] from Princeton, 
+   - [[http://ant.apache.org/][ant]]
+
+
+In the cases of the tools, especially the input syntax (for the lexer and
+for the parser) are relevant. Probably one learns a lot from examples, that
+are provided with those tools. For ant, use the ~built.xml~ provided /here/
+as starting point, it should give a good start. So I would not recommend
+study the manuals deeply, before starting with the obligs. I would rather
+take the running examples, and play with them. (and ask)
+

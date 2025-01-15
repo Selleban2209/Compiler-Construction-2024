@@ -1,0 +1,329 @@
+
+* Oblig2                                                     :export:
+  :PROPERTIES:
+  :BEAMER_env: ignoreheading
+  :END:
+
+** Intro 
+*** Goal                                                            :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+1.  *semantic  analysis*, as far as 
+    - *typing* is concerned (``static semantics'')
+    - other coditions (no duplicate declaration etc)
+
+2. *code generation* for ~compila23~ (ish) programs
+
+
+
+
+
+
+*** Last time (O1)                                                  :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+**** Syntactic analysis                                             :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+   - lexer (scanner)
+   - parser
+   - abstract syntax tree
+
+
+
+**** Rest                                            :B_ignoreheading:ignore:
+     :PROPERTIES:
+     :BEAMER_env: ignoreheading
+     :END:
+
+
+*this time*: continue with your previous deliv. (and repos)
+
+
+
+*** Learning outcome                                                :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- understand type checking, implementing a simple variant
+
+
+- understand (simple form of) bytecode and how to generate it from ``source
+  code'' (as AST)
+
+- extend an existing compiler code base with new functionality 
+
+
+** Semantic analysis 
+*** Semantic analysis & type checking                               :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+- parser / context-free  grammars 
+    - not powerful enough 
+    - cannot check all (static) properties of a language spec
+
+- => extend the front-end by a type checker
+
+    - use the AST classes of last time
+    - add type checking code
+    - allowed to make *changes* or adaptations if advantagous.
+
+
+*** Another glance at compila23                                     :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+#+begin_export latex 
+ \includegraphics[width=\textwidth]{figures/snaps/compilaexample-checking}
+#+end_export
+
+
+NB: 2023: structs, not classes 
+
+
+*** Type checking for conditionals                                  :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :BEAMER_opt: plain
+    :END:
+
+
+- as ``inspiration'', details may vary
+
+
+#+begin_src java
+  class IfStatement extends Statement {
+  ...
+    public void typeCheck(){
+      String condType = condition.get.Type ();
+      if (condType != "bool") {  
+         throw new TypeException("condition in an if 
+           statement must be of type bool")
+      }
+}
+#+end_src
+
+
+*** Type checking: assignments                                      :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :BEAMER_opt: plain
+    :END:
+
+
+
+
+#+begin_src java
+class Assignment extends Statement {
+...
+  public void typeCheck() {
+    String varType = var.getType();
+    String expType = exp.getType();
+    if (varType != expType &&
+       !isAssigmentCompatible(varType,expType){
+                 throw new TypeException("Cannot assign " + vartpe + 
+                 " from " + expType);
+  }
+}
+
+#+end_src
+
+
+
+** Code generation
+*** Code generation                                                 :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+# - lecture(s) of code gen start have startight now (so it might look puzzling, but
+#   hopefully will become clearer)
+- byte code API and operations are described in the document ``Interpreter
+  and bytecode for INF5110''
+
+- *Task:* add bytecode generation methods to your AST classes
+  for instance
+
+#+begin_example 
+   Ast.Node.GenerateCode(...)
+#+end_example
+- again: if adaptations of the AST are called for or useful, go for it...
+
+- some people did *visitors* for ast-printing, one can also (re-)use the visitor pattern
+
+*** Code generation: limitations                                    :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- interpreter and byte code library somewhat *limited*
+   - cannot express full compila 23
+   - no block structure
+   - no reference types
+
+
+- your delivery should support generating correct bytecode
+  for the ~compila~ 23 source code file ~runme.cmp~
+
+
+
+*** Code generation: creating a procedure                           :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :BEAMER_opt: plain
+    :END:
+
+
+#+begin_src  java
+CodeFile codeFile = new CodeFile();
+// add the procedure by name first
+codeFile.addProcedure("Main")
+// then define it
+CodeProcedure main = new 
+   CodeProcedure("Main", VoidType,TYPE, codeFile);
+main.addInstruction( new RETURN());
+//then update it in the code file
+codeFile.updateProcedure(main);
+#+end_src
+
+*** Code generation: assignment                                     :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+#+begin_export latex 
+\begin{center}
+ \includegraphics[width=0.76\textwidth]{figures/snaps/codegen-assignment}
+\end{center}
+#+end_export
+
+
+
+# *** Code generation: writing to a file ?
+
+
+** Testing   
+*** Testing                                                         :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- bunch of test files, for testing the /type checker/
+- preferable: make ~ant test~ workable 
+
+- test files inside ~./tests/semanticanalysis/errors/~ (and with ~fail~ in
+  the filename) contain a syntactically correct but erronous program
+  (erroneous as the type system or generally the semantic phase is
+  concerned)
+
+- => compiler returns error code 2 for semantic failure
+
+
+
+** Starting point and hand in
+*** Provided source code (patch)                                    :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+  [[https://github.uio.no/msteffen/compila]]
+
+#+begin_export latex 
+ \includegraphics[width=0.96\textwidth]{figures/snaps/directorystructure-src}
+#+end_export
+
+Tests: already included in the oblig1 checkout, so left out in the zip-patch
+this year.
+
+*** Provided documentation (patch)                                  :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+#+begin_export latex 
+
+\begin{center}
+ \includegraphics[width=0.75\textwidth]{figures/snaps/directorystructure-doc}
+\end{center}
+#+end_export
+
+
+
+*** Relevant directories                                            :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+- Java
+
+  - ~compiler~: updated compiler class (patch)
+  - ~test~:   some code for performing tests (patch)
+  - ~bytecode~: classes for constructing bytecode (already there)
+  - ~runtime~: rte for executing the byte code (already there)
+
+- Compila
+
+  - ~tests~: some test files (including ~runme.cmp~)
+ 
+
+
+*** Deadline                                                        :B_frame:
+    :PROPERTIES:
+    :BEAMER_env: frame
+    :END:
+
+
+
+
+**** Deadline                                                  :B_alertblock:
+     :PROPERTIES:
+     :BEAMER_env: alertblock
+     :END:
+
+      (Friday, 12.05.2023)
+
+
+**** Rest                                            :B_ignoreheading:ignore:
+     :PROPERTIES:
+     :BEAMER_env: ignoreheading
+     :END:
+
+
+Note: end of semester, and I need to report the ones passing the oblig some
+time before the exam.
+
+
+**** delivs                                                         :B_block:
+     :PROPERTIES:
+     :BEAMER_env: block
+     :END:
+
+- working type checker
+- code generator (test with ~runme.cmp~)
+- report (including your name(s) etc.
+
+  - discussion of your solution, choices you made, assumptions you rely on
+
+  - printout of a test run (can be also checked in into the repos, but it 
+     needs to be mentioned where it is)
+  - printout of the bytecode from ~runme.cmp~ (with a target like ~ant
+    list-runme~)
+
+  - solution must ``build'' and be ``testable'' (typically via ~ant~)

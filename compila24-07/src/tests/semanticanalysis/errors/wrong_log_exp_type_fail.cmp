@@ -1,0 +1,12 @@
+program wrong_log_exp_type_fail
+begin
+
+    (* Arguments of a logical operator not of type bool. *)
+    procedure main()
+    begin
+        var b : bool
+    in
+        b := false || 4;  (* error *)
+        b := 5 && true    (* error, as well *)
+    end
+end

@@ -1,0 +1,689 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t
+#+options: broken-links:nil c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+options: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t
+#+options: tags:nil tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+title: Organizational file (for internal use) 
+#+date: <2020-02-05 Wed>
+#+author: Martin Steffen
+#+email: msteffen@ifi.uio.no
+#+language: en
+#+select_tags: export slides B_frame B_againframe
+#+exclude_tags: private noexport B_note todo handout ARCHIVE script
+#+creator: Emacs 24.3.1 (Org mode 9.3.1)
+
+
+ 
+
+* Misc
+
+** Github setup
+
+We first have to set up this repos (as empty) on the server.
+
+#+begin_example
+git remote add origin22-00 git@github.uio.no:compilerconstruction-inf5110/compila24-00.git
+git branch
+git remote -v
+git push -u origin24-00 master
+#+end_example
+
+~git remote -v~ then shows
+
+#+begin_example
+
+#+end_example
+origin	git@github.uio.no:compilerconstruction-inf5110/compila.git (fetch)
+origin	git@github.uio.no:compilerconstruction-inf5110/compila.git (push)
+origin24-00	git@github.uio.no:compilerconstruction-inf5110/compila24-00.git (fetch)
+origin24-00	git@github.uio.no:compilerconstruction-inf5110/compila24-00.git (push)
+#+begin_example
+git push origin master
+#+end_example
+
+
+*** Things to do
+
+
+**** DONE how to remove the remote <2022-02-04 Fri 09:53>
+CLOSED: [2022-05-27 Fri 14:13]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-05-27 Fri 14:13] \\
+  egal
+:END:
+
+Or maybe we add them all
+
+
+
+**** CANCELLED check the tests, if they still work <2022-02-03 Thu 14:33>
+CLOSED: [2022-05-27 Fri 14:13]
+:LOGBOOK:
+- State "CANCELLED"  from "TODO"       [2022-05-27 Fri 14:13] \\
+  I guess they did. Irrelevant now
+:END:
+
+**** DONE how to push the new empty repos'es <2022-02-03 Thu 13:53>
+CLOSED: [2022-02-03 Thu 14:06]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-02-03 Thu 14:06]
+:END:
+
+I did this
+
+#+begin_example
+git remote add origin22-00 git@github.uio.no:compilerconstruction-inf5110/compila22-00.git
+git branch
+gut remote -v
+git push -u origin22-00 master
+#+end_example
+
+#+begin_example
+git remote add origin git@github.uio.no:compilerconstruction-inf5110/compila22-01.git
+git branch -M main
+git push -u origin main
+#+end_example
+
+Maybe we should not push the whole history. But I did it anyway.
+
+
+git remote add my_awesome_new_remote_repo git@git.assembla.com:portfolio/space.space_name.git
+
+
+#Verify new remote
+
+git remote -v
+
+> my_awesome_new_remote_repo  git@git.assembla.com:portfolio/space.space_name.git (fetch)
+> my_awesome_new_remote_repo  git@git.assembla.com:portfolio/space.space_name.git (push)
+
+To push your changes into your remote repo execute the git push <remote> <branch> command:
+
+git push <your_remote_name>
+
+#git push my_awesome_new_remote_repo
+
+
+
+
+*** DONE Compilatest <2023-02-10 Fri 06:15>
+CLOSED: [2023-02-10 Fri 06:15]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 06:15]
+:END:
+
+*** DONE how to use teams? <2022-02-03 Thu 12:44>
+CLOSED: [2022-02-03 Thu 13:52]
+:LOGBOOK:
+- State "DONE"       from "PENDING"    [2022-02-03 Thu 13:52]
+:END:
+** Build file
+
+*** DONE go through the handout again <2020-02-05 Wed 12:08>
+    CLOSED: [2020-09-07 Mon 13:18]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-09-07 Mon 13:18]
+    :END:
+
+*** DONE go through the Readme again <2020-02-05 Wed 12:08>
+    CLOSED: [2020-09-07 Mon 13:18]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-09-07 Mon 13:18]
+*** CANCELLED go through the Readme again <2020-02-05 Wed 12:08>
+    CLOSED: [2021-02-09 Tue 14:06]
+    :LOGBOOK:
+    - CLOSING NOTE [2021-02-09 Tue 14:06]
+*** DONE install javac on the laptop <2020-02-05 Wed 09:01>
+    CLOSED: [2020-02-05 Wed 09:36]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-02-05 Wed 09:36] \\
+      dnf java-devel
+    :END:
+
+
+
+*** DONE test the material on the laptop <2020-02-05 Wed 08:59>
+    CLOSED: [2020-02-05 Wed 09:38]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-02-05 Wed 09:38] \\
+      ok, worked
+    :END:
+*** FIXED make it buildable again <2020-02-05 Wed 08:45>   
+    CLOSED: [2020-02-05 Wed 12:08]
+    :LOGBOOK:
+    - CLOSING NOTE [2020-02-05 Wed 12:08] \\
+      ok
+    :END:
+
+  - [X]  clean
+  - [X]  build: now ok
+  - [X]  run
+
+
+
+**** DONE check last year, perhaps there was a zip <2020-02-05 Wed 08:45>
+     CLOSED: [2020-02-05 Wed 09:46]
+     :LOGBOOK:
+     - State "DONE"       from "TODO"       [2020-02-05 Wed 09:46] \\
+       not really
+     :END:
+
+*** DONE find the first tests. <2020-02-05 Wed 10:31>
+    CLOSED: [2020-02-05 Wed 12:05]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-02-05 Wed 12:05] \\
+      oblig 1 did not have tests
+    :END:
+
+There is stuff in [[../../previoussemesters/2017-start]] ~inf5110_mandatory1_starting_point.zip~
+
+But there is no tester file.
+
+**** DONE does it build without the test directory?  <2020-02-05 Wed 11:40>
+     CLOSED: [2020-02-05 Wed 11:46]
+     :LOGBOOK:
+     - State "DONE"       from "TODO"       [2020-02-05 Wed 11:46] \\
+       ok
+     :END:
+Renaming does not do it. It must be moved out of the directory.
+
+**** DONE where was the test directory earlier <2020-02-05 Wed 11:40>
+     CLOSED: [2020-02-05 Wed 12:05]
+     :LOGBOOK:
+     - State "DONE"       from "TODO"       [2020-02-05 Wed 12:05] \\
+       it was not part of oblig 1
+     :END:
+
+
+**** DONE should there be even a tester file? check the original build <2020-02-05 Wed 10:37>'''
+     CLOSED: [2020-02-05 Wed 11:03]
+     :LOGBOOK:
+     - State "DONE"       from "TODO"       [2020-02-05 Wed 11:03] \\
+       No, the starting point has no test fil.
+     :END:
+
+**** CANCELLED what's the diff's <2020-02-05 Wed 11:00>
+     CLOSED: [2020-02-05 Wed 11:03]
+     :LOGBOOK:
+     - CLOSING NOTE [2020-02-05 Wed 11:03] \\
+       maybe egal
+     :END:
+
+ Comare the new build.xml the new patch one and the old start on
+
+
+
+
+
+*** DONE check also the other file in the test subdir  <2020-02-05 Wed 10:23>
+    CLOSED: [2020-02-05 Wed 10:31]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-02-05 Wed 10:31]
+    :END:
+
+The file ~FileEndingFilter.java~. Yes, that also for the patch  for o2
+
+*** DONE test a fresh checkedout simple examples <2019-02-12 Tue 07:31>
+    CLOSED: [2019-02-12 Tue 07:45]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2019-02-12 Tue 07:45]
+    :END:
+**** FIXED running does not work <2019-02-12 Tue 07:40>
+     CLOSED: [2019-02-12 Tue 07:45]
+     :LOGBOOK:
+     - CLOSING NOTE [2019-02-12 Tue 07:45]
+     :END:
+
+
+./input-examples/test-eval.txt (No such file or directory)
+**** FIXED the par example does not compile <2019-02-12 Tue 07:34>
+     CLOSED: [2019-02-12 Tue 07:40]
+     :LOGBOOK:
+     - CLOSING NOTE [2019-02-12 Tue 07:40]
+     :END:
+     - ./src-examples missing
+     -     [javac] import exampletree.*;
+*** DONE compile the program inside the document <2019-02-12 Tue 06:59>
+    CLOSED: [2019-02-12 Tue 07:30]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2019-02-12 Tue 07:30]
+    :END:
+
+*** CANCELLED remove dir.desc <2019-02-11 Mon 15:12>
+    CLOSED: [2019-11-26 Tue 10:49]
+    :LOGBOOK:
+    - CLOSING NOTE [2019-11-26 Tue 10:49] \\
+      I don't know what that was
+    :END:
+
+
+** Compiler 
+
+*** DONE remove the waring for reproducable build <2023-08-01 Tue 08:49>
+CLOSED: [2023-08-01 Tue 09:27]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-01 Tue 09:27]
+:END:
+
+*** DONE remove the deprecated warnings for  ~new Integer~ <2023-08-01 Tue 08:06>
+CLOSED: [2023-08-01 Tue 08:49]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-01 Tue 08:49]
+:END:
+
+#+begin_example
+Integer(int) in Integer has been deprecated and marked for removal
+    [javac] 	return new Integer(0);
+#+end_example
+
+#+begin_example
+Integer​(int value)	
+Deprecated. 
+It is rarely appropriate to use this constructor. The static factory valueOf(int) is generally a better choice, as it is likely to yield significantly better space and time performance.
+#+end_example
+
+There are two instances which I cannot get rid of (in interpreter Java): [[file:~/cor/teaching/compilerconstruction-inf5110/compila/src/runtime/Interpreter.java::private Object exp(Object pop0, Object pop1) {][here]]
+
+    
+*** DONE find complexaddition.ast <2020-02-05 Wed 08:50>
+    CLOSED: [2020-04-02 Thu 07:04]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-04-02 Thu 07:04]
+    :END:
+
+it's in material/sample-compila-ast
+*** DONE Error in the test files
+    CLOSED: [2018-03-19 Mon 07:54]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2018-03-19 Mon 07:54]
+    :END:
+<2018-03-19 Mon 07:45>
+
+
+[[../../oblig1-starting-point/compila-code/compila.cmp  
+Are there any available test program to validate the correctness of our
+compiler? The repo provided "compila.cmp" seem to not fully cover all
+functionality of compila 18. 
+
+Also from the languange spec:
+
+REC_DECL -> "struct" NAME "{" { VAR_DECL ";" } "}"
+
+compila.cmp: 
+
+struct Complex
+begin
+var Real : float;
+var Imag : float;
+end;​
+
+begin and end has been switched out by brackets.
+
+
+
+
+
+
+
+** This to do (compila)
+
+
+
+*** DONE reactivate: export to texi <2023-02-10 Fri 06:29>
+CLOSED: [2023-02-10 Fri 06:38]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 06:38]
+:END:
+
+
+*** DONE port the spec to 2023 <2023-02-10 Fri 06:22>
+CLOSED: [2023-02-10 Fri 06:38]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 06:38]
+:END:
+*** DONE regenerate the oblig-text  <2023-02-10 Fri 06:16>
+CLOSED: [2023-02-10 Fri 06:38]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 06:38]
+:END:
+
+*** DONE When was the old one published/discussed <2023-02-10 Fri 06:53>
+CLOSED: [2023-02-10 Fri 06:56]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 06:56]
+:END:
+
+published it was printable 09.02.2022. Indeed, we have to go out with the
+oblig.
+
+*** DONE when is easter <2023-02-10 Fri 06:57>
+CLOSED: [2023-02-10 Fri 10:06]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 10:06]
+:END:
+
+09.04.2023
+
+3/7/10 April, No lecture, last is 31.03, first is 14.
+
+
+*** DONE Not so important: does the functional one compiles? <2023-02-10 Fri 10:41>
+CLOSED: [2023-02-10 Fri 10:47]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 10:47] \\
+  yep
+:END:
+
+
+*** DONE update the readme <2023-02-10 Fri 10:50>
+CLOSED: [2023-02-10 Fri 10:55]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 10:55]
+:END:
+
+*** DONE not so important: does the functional parse the current syntax and survive the tests? <2023-02-10 Fri 10:42>
+CLOSED: [2023-02-10 Fri 10:47]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 10:47] \\
+  yep
+:END:
+
+*** FIXED expressions don't work <2023-02-10 Fri 11:13>
+CLOSED: [2023-02-10 Fri 11:35]
+:LOGBOOK:
+- CLOSING NOTE [2023-02-10 Fri 11:35] \\
+  It was ok
+:END:
+
+*** DONE what's oblig1.lex <2023-02-10 Fri 11:15>
+CLOSED: [2023-02-10 Fri 11:35]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 11:35]
+:END:
+
+*** DONE test it on the  University <2023-02-10 Fri 12:41>
+CLOSED: [2023-08-01 Tue 08:07]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-01 Tue 08:07]
+:END:
+
+*** DONE what does the handoutn say <2023-02-10 Fri>
+CLOSED: [2023-02-10 Fri 11:37]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 11:37] \\
+  I did it
+:END:
+
+*** DONE did I last time set up the reposes themselves? <2023-02-10 Fri 11:35>
+CLOSED: [2023-02-10 Fri 11:37]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 11:37] \\
+  Seem like
+:END:
+
+*** DONE make a fresh checkout and test it <2023-02-10 Fri 10:40>
+CLOSED: [2023-08-01 Tue 08:07]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-01 Tue 08:07]
+:END:
+*** DONE do a compila23-00 <2023-02-10 Fri 10:55>
+CLOSED: [2023-08-01 Tue 08:07]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-08-01 Tue 08:07]
+:END:
+
+*** DONE do the slides for oblig 1 <2023-02-10 Fri 10:27>
+CLOSED: [2023-02-10 Fri 10:40]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 10:40]
+:END:
+
+
+*** DONE compare the number of lectures 2022/2023 <2023-02-10 Fri 07:11>
+CLOSED: [2023-02-10 Fri 10:27]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 10:27]
+:END:
+*** DONE replace the obligs-text 1 <2023-02-10 Fri 06:42>
+CLOSED: [2023-02-10 Fri 10:16]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 10:16]
+:END:
+
+*** DONE regenerate the webpage <2023-02-10 Fri 06:16>
+CLOSED: [2023-02-10 Fri 06:49]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2023-02-10 Fri 06:49]
+:END:
+
+*** DONE change to 2022 <2022-02-03 Thu 10:03>
+CLOSED: [2022-02-03 Thu 12:44]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-02-03 Thu 12:44]
+:END:
+
+*** DONE check the org-export <2022-02-03 Thu 09:51>
+CLOSED: [2022-02-03 Thu 10:03]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-02-03 Thu 10:03] \\
+  only the javadoc
+:END:
+
+*** DONE redo the compilarbytecodejavadoc <2022-02-03 Thu 09:52>
+CLOSED: [2022-02-03 Thu 10:03]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-02-03 Thu 10:03]
+:END:
+
+*** DONE is it org-exported? <2022-02-03 Thu 09:50>
+CLOSED: [2022-02-03 Thu 10:03]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-02-03 Thu 10:03] \\
+  only the javadoc
+:END:
+
+There's some [[file:~/gnu/emacs/25/my-unchanged/emacs-orghtml::("org-mmcompilabytecodejavadoc"]]
+
+*** CANCELLED how what the org-publish thing going? <2021-02-09 Tue 14:07>
+    CLOSED: [2021-08-04 Wed 15:52]
+    :LOGBOOK:
+    - State "CANCELLED"  from "TODO"       [2021-08-04 Wed 15:52] \\
+      Can't remember. I  want to integrate it to org-publish anyway
+    :END:
+
+It's done not in the same file as the Jekyll-stuff, but it's here:
+[[file:~/gnu/emacs/25/my-unchanged/emacs-orgload][file:~/gnu/emacs/25/my-unchanged/emacs-orgload]]
+
+*** DONE integrate it to the org-publish set-up <2021-02-09 Tue 14:33>
+CLOSED: [2022-05-27 Fri 14:13]
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-05-27 Fri 14:13] \\
+  egal
+:END:
+
+*** CANCELLED did I even use org-publish? <2021-02-09 Tue 14:19>
+    CLOSED: [2021-08-04 Wed 15:52]
+    :LOGBOOK:
+    - State "CANCELLED"  from "TODO"       [2021-08-04 Wed 15:52] \\
+      not so importat
+    :END:
+
+Maybe not.    
+
+
+*** CANCELLED port the first oblig handout <2021-02-09 Tue 15:07>
+    CLOSED: [2021-08-04 Wed 15:53]
+    :LOGBOOK:
+    - State "CANCELLED"  from "TODO"       [2021-08-04 Wed 15:53] \\
+      egal for now
+    :END:
+
+*** DONE port the language spec <2021-02-09 Tue 15:07>
+    CLOSED: [2021-02-09 Tue 15:07]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2021-02-09 Tue 15:07]
+    :END:
+
+*** DONE do the latex first <2021-02-09 Tue 14:19>
+    CLOSED: [2021-02-09 Tue 15:07]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2021-02-09 Tue 15:07]
+    :END:
+
+*** DONE where is the file <2021-02-09 Tue 14:22>
+    CLOSED: [2021-02-09 Tue 14:38]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2021-02-09 Tue 14:38]
+    :END:
+
+[[file:/home/msteffen/cor/teaching/compila/src/doc/languagespec/code/swap-cbr.code]]
+
+There is this one:
+
+./cor/teaching/compila/src/doc/languagespec/code/swap-cbr-old.code
+
+it was not checked in at the office.
+   
+
+*** CANCELLED port the slides <2021-02-09 Tue 14:07>
+    CLOSED: [2021-08-04 Wed 15:53]
+    :LOGBOOK:
+    - State "CANCELLED"  from "TODO"       [2021-08-04 Wed 15:53] \\
+      can't remember
+    :END:
+
+*** DONE where is the info in the web 2020?<2021-02-09 Tue 14:13>
+    CLOSED: [2021-02-09 Tue 14:15]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2021-02-09 Tue 14:15]
+    :END:
+
+https://www.uio.no/studier/emner/matnat/ifi/INF5110/v20/obligs/languagespec/    
+
+*** CANCELLED Check if we have the oblig2 zip saved for 2019 <2020-04-02 Thu 10:04>
+    CLOSED: [2021-02-09 Tue 14:07]
+    :LOGBOOK:
+    - CLOSING NOTE [2021-02-09 Tue 14:07]
+    :END:
+*** CANCELLED Repair the thing from the test file (by group06)
+    CLOSED: [2020-01-14 Tue 10:18]
+    :LOGBOOK:
+    - CLOSING NOTE [2020-01-14 Tue 10:18] \\
+      Outdated
+    :END:
+
+    #+begin_example
+    
+    #+end_example
+*** DONE Error in the test files
+    CLOSED: [2018-03-19 Mon 07:54]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2018-03-19 Mon 07:54]
+    :END:
+<2018-03-19 Mon 07:45>
+
+
+[[../../oblig1-starting-point/compila-code/compila.cmp  
+Are there any available test program to validate the correctness of our
+compiler? The repo provided "compila.cmp" seem to not fully cover all
+functionality of compila 18. 
+
+Also from the languange spec:
+
+#+begin_example
+REC_DECL -> "struct" NAME "{" { VAR_DECL ";" } "}"
+
+compila.cmp: 
+
+struct Complex
+begin
+var Real : float;
+var Imag : float;
+end;​
+#+end_example
+
+begin and end has been switched out by brackets.
+
+
+
+
+*** DONE integrate to org <2019-02-07 Thu 09:31>
+   CLOSED: [2019-02-07 Thu 09:40]
+   :LOGBOOK:
+   - State "DONE"       from "TODO"       [2019-02-07 Thu 09:40]
+   :END:
+
+*** CANCELLED Typo in the laguage spec
+   CLOSED: [2019-02-07 Thu 09:40]
+   :LOGBOOK:
+   - CLOSING NOTE [2019-02-07 Thu 09:40] \\
+     Can't remember
+   :END:
+<2018-03-27 Tue 15:21>
+
+
+
+
+* Tests
+
+*** DONE port the oblig2 tests (errors) <2020-04-02 Thu 07:17>
+    CLOSED: [2020-04-02 Thu 10:04]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-04-02 Thu 10:04]
+    :END:
+
+
+
+*** DONE [4/4] port the oblig2 tests (noerrors) <2020-04-02 Thu 07:04>
+    CLOSED: [2020-04-02 Thu 07:16]
+    :LOGBOOK:
+    - State "DONE"       from "TODO"       [2020-04-02 Thu 07:16]
+    :END:
+
+   - [X]  test1
+   - [X]  test3
+   - [X]  test4 
+   - [X]  test5
+
+
+* What to do better next year.
+
+Remarks per semester, especially list of things that I did /not/ like (but
+perhaps also positive things).
+
+
+** 2022
+
+
+
+
+** 2020 
+
+** 2018 (I guess)
+
+
+- Grammar: call_stmt -> call_expr
+
+
+- maybe better structure of the starting point
+
+- make the handout for the oblig contain all the stuff
+   which is also on the slides
+- check the examples better.
+- perhaps don't do the stupid ant-stuff (or at least
+   get a better grip on it)
+
+- perhaps don't call it starting-point
+
+
+- I don't like the clause for ~VAR~ (at least the name), it's not a ``variable''
+
+** Grammar
+
+  - I don't like the call-statements: it's unclear
+    how to give back return values
+
+
+
+
+
+  

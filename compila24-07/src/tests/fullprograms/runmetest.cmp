@@ -1,0 +1,8 @@
+program runmetest
+begin 
+  procedure main()
+  begin 
+  in
+   printstr("Storst ")
+  end
+end 

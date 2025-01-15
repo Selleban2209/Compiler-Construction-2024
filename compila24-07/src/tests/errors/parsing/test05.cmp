@@ -1,0 +1,7 @@
+program p begin    
+  procedure a (x:int)
+  begin 
+  in
+   f(1,2,3,4,)    (* should fail. *)
+  end
+end  

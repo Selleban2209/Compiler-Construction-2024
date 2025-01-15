@@ -1,0 +1,12 @@
+program procedure_unknown_return_type_fail
+begin
+	procedure main()
+	begin
+        in
+	end;
+	procedure test() : notexists (* error: notexists does not exist. *)
+	begin
+            in
+	    return (new notexists)
+	end
+end

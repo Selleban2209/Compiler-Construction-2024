@@ -1,0 +1,327 @@
+\documentclass[11pt,freeform]{handout}[2014/08/13]
+
+\input{coursedata}
+\input{preamble}
+\pgfdeclareimage[height=2.4cm,interpolate=true]{uio}{logos/uiologo}%% relative
+%\usepackage[german]{babel} 
+%\usepackage{german}
+
+\handouttitle{Oblig 2}
+\handoutnumber{2} 
+%\issuedate{18.\ 04.\ 2018}
+\issuedate{10.\ 04.\ 2019}
+\issuedate{2.\ 04.\ 2020}
+\issuedate{7.\ 04.\ 2021}
+\issuedate{29.\ 03.\ 2022}
+\issuedate{31.\ 03.\ 2023}
+\topic{Oblig 2}
+
+
+
+
+\begin{document}
+\thispagestyle{empty}
+
+
+
+\section{Official }
+\label{sec:official-info}
+
+
+
+
+\hrulefill{}
+
+The \textbf{deadline/frist}  for the second oblig is
+
+\begin{quote}
+  \textbf{\deadlinetwo}
+\end{quote}
+
+
+
+
+
+
+In this handout, I refer to information in files and directories. Part of
+the information is contained in the \textbf{git-repository} that you have
+cloned for the first oblig already (though it was not relevant at that
+time, and I adapted the documentation like this handout and the slides to
+the 2023 round in the meantime).
+
+I refer to the root of the repos as 
+\begin{quote}
+  \texttt{<COMPILAROOT>}.   
+\end{quote}
+On the net, it corresponds to the browsable version in the repository
+hosted by github under
+
+\begin{quote}
+  \texttt{https://github.uio.no/compilerconstruction-inf5110/compila}
+\end{quote}
+
+In your own \textbf{working directory,} it will probably carry the name
+\texttt{compila00-<xx>}, unless you have chosen to rename it.
+
+
+
+
+\section{What and how to hand in}
+\label{sec:what-how}
+
+
+\subsection{Git}
+\label{sec:git}
+
+You will continue with your group's git-repos you used in the first oblig.
+Basically, you continue with your previous code, add the new functionality,
+push a solution before the deadline, and inform me when it's done so that I
+can update. It's important to tell me, as I don't want to repeatedly update
+in the hope that it's done.
+
+In case your previous code of oblig 1 was not fully functional, you of
+course get first the parser in a workable state.
+
+
+If a change in arrangement is needed (merge of groups, or a split of
+groups), you need to ask for that re-arrangement (not just that on the day
+of the deadline it's ``announced'' that there is now a new group \ldots).
+
+
+
+See also the \emph{Readme} of the \emph{``patch''} under
+
+\begin{quote}
+  \url{<COMPILAROOT>/oblig2patch/oblig2patch/Readme.org}
+\end{quote}
+
+
+\subsection{What to include into a solution}
+\label{sec:what-include-into}
+
+As before, it should be an appropriately commented repos, solving the tasks
+of oblig 2. In particular needed is (basically as before)
+
+
+\begin{itemize}
+\item A top-level \emph{Readme-file}\footnote{Many did a \texttt{Readme.md}
+    which is a good format.} containing
+  \begin{itemize}
+  \item containing names and emails of the authors (as before)
+  \item instructions how to build the compiler and how to run it (as
+    before).
+  \item test-output for running the compiler on \texttt{compila.cmp} as
+    input
+  \item of course, all code needed to run your solution 
+  \item the Java-classes for the syntax-tree
+  \item the build-script \texttt{build.xml} (adapted)
+  \end{itemize}
+\end{itemize}
+
+Of course, the old code (for lex and yacc-based parsing) is still
+needed. It's not needed that both versions of the grammar, required for
+oblig 1, are still supported, one working version is enough.
+
+
+
+\section{Purpose and goal}
+\label{sec:x}
+
+The goal of the task is to collect more practical experience implementing a
+compiler, in particular, a taste of phases after parsing. It's only a
+taste, as we don't have the time to get a full-scale compiler on its
+feet. The language we are compiling is (as before) described in the
+\textbf{compila 23 language specification.} This time, also the later
+sections about type checking etc, that were irrelevant for oblig 1, specify
+the scope of the task as far as the language features are concerned.
+
+
+Testing becomes more important than in oblig 1. It's \emph{necessary} that
+a solution is equipped
+
+
+\begin{quote}
+  with ``automatic test-cases''
+\end{quote}
+
+That can be done (as before) via ant targets. Those tests have to be
+executable on the RHEL linux pool at the university.\footnote{That should
+  actually not be a big restriction, as Java (and the task) is to a big
+  extent platform independent (``write once, run everywhere''
+  \ldots). Nonetheless: Based on experience with the earlier years (this
+  year actually no real problems occured on my side in oblig 1, though some
+  group reported that internally they had to struggle with compatibility
+  issues of unknown nature): it's advised to make this ``test'' setup early
+  on (not after the deadline), to design the code \emph{with the goal that
+    it runs also at a different place than one's own platform} and to test
+  that this goal is actually met. The reason for that ``testability''
+  requirement is that correction will again not be based on reading much
+  code from my side, but in first approximation: running the test. In that
+  sense, it's also not of primary importance, whether it's \texttt{ant} or
+  perhaps \emph{make} or some script. Important is, that I can execute it
+  by invoking a simple command.  I don't have the time to figure out how
+  one particular solution is configured, started, etc. I don't even want to
+  look around and try whether I find a \texttt{main} method somewhere\ldots
+}
+
+
+\section{Tools}
+%\label{sec:tools}
+
+
+The tools are basically the same as for the previous oblig, and typically
+you will continue anyway with the previous set-up. 
+
+
+
+
+\section{Task more specifically: Type checking and code generation}
+\label{sec:task-more-spec}
+
+
+
+The task is to extend the parser and AST generation with type checking and
+code generation. The rules governing the type checking and other
+restrictions are described in the language specification already (in the
+later sections). The ``semantics'' is \emph{not} specified, but the
+language is so simple that it should basically be clear what a compila
+program is supposed to do.
+
+The target ``platform'' is described in a separate document (which was
+already made available as part of the git-repos). It's also browsable under
+
+
+\begin{quote}
+  \url{<COMPILAROOT>/doc/bytecodeinterpreter/bytecodeinterpreter.pdf}
+\end{quote}
+
+%\begin{quote}
+%  \url{https://github.uio.no/compilerconstruction-inf5110/compila/tree/master/doc/bytecodeinterpreter}
+%\end{quote}
+
+
+
+
+
+\subsection*{Tests}
+\label{sec:tests}
+
+The tests that need to be successfully run for oblig 2 are
+\begin{enumerate}
+\item testing the type checker resp. semantic analysis
+\item testing the code coge generator
+\end{enumerate}
+
+
+The tests are located as follows relative to the
+\texttt{COMPILAROOT}-directory
+
+\begin{verbatim}
+   ./src/tests/semanticanalysis/
+\end{verbatim}
+
+
+\begin{verbatim}
+   ./src/tests/fullprograms/runme.cmp
+\end{verbatim}
+
+
+They are already contained in \textbf{your git-repos} at the descibed
+places (unless you have reorganized it).
+
+\subsection*{Patch}
+\label{sec:patch}
+
+
+Obtain the patch (as zip-archive) under  (change)
+
+\begin{quote}
+  \url{https://github.uio.no/compilerconstruction-inf5110/compila/tree/master/oblig2patch/oblig2patch.zip}
+\end{quote}
+
+or via an \emph{updated} clone of the course repos. Read also the
+~Readme.org~ there, there is more info about how to start. Note: when you
+cloned or downloaded the repository in perhaps Februrary there had been
+already some \emph{oblig2patch} as part of the repos. Also that should be
+more or less usable, but it reflects the \textbf{2022 version}. Not much
+has changed since then (mostly the documentation like this \textbf{handout}
+here and the \emph{slides}, the actual ``content'' is basically the same.
+
+Here is an overview over the structure of the new stuff:
+
+
+\begin{verbatim}
+  oblig2patch/
+  oblig2patch/src/
+  oblig2patch/src/test-asinspiration/
+  oblig2patch/src/test-asinspiration/Tester.java
+  oblig2patch/src/test-asinspiration/FileEndingFilter.java
+  oblig2patch/src/compiler/
+  oblig2patch/src/compiler/Compiler.java
+  oblig2patch/doc/
+  oblig2patch/doc/obligs/
+  oblig2patch/doc/obligs/handout-oblig2.pdf
+  oblig2patch/doc/obligs/slides-oblig2.pdf
+  oblig2patch/Readme.org
+\end{verbatim}
+
+
+\subsubsection{Why is it called patch?}
+\label{sec:why-it-called}
+
+It's called patch, because your compiler needs not just \emph{new classes}
+for instance for type checking, some already existing files also need
+adaptation and changes. For oblig 1, I provided for example a file
+\texttt{Compiler.java}, most took it as starting point (but may have
+adapted it as well). Since I have no control what individual groups did
+with that file I cannot hand out a \textbf{actual patch} in the technical
+sense. Instead, I give a \emph{new version} of \texttt{Compiler.java} as
+part of the patch-package, that should be used as \textbf{inpiration} of
+what probably needs to be adapted in your version. The files
+\texttt{Tester.java} and \texttt{FileEndingsFilter.java} are meant to be
+used for testing, in particular to \textbf{automate} the tests
+provided. Again, since I don't control how you solved oblig 1, it's
+possible that they require adapdation. At least they need to be integrated
+to your implemantation, i.e., moved out from the silly directory
+\emph{oblig2patch} to a better suited place (and integrated into your
+build-set-up).
+
+
+
+
+
+
+
+
+
+%\bibliographystyle{apalike}
+%{\small
+% \bibliography{string,semantics,crossref}
+%% \bibliography{extracted}
+% }
+
+
+
+
+%\section{Resources}
+%\label{sec:resources}
+
+
+
+
+
+
+
+\end{document}
+
+Model Checking Cache Coherence Protocols for Distributed File Systems
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

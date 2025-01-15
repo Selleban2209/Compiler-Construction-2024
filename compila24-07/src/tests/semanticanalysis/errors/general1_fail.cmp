@@ -1,0 +1,15 @@
+program general1_fail
+begin
+  procedure main()
+  begin
+    procedure Tmp() : string
+    begin
+        in
+        return "squeamish ossifrage"
+    end;
+
+    var Tmp : int (* Error: already a symbol named "Tmp" in the current scope. *)
+    in
+    printstr( Tmp() )
+   end
+end

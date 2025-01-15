@@ -1,0 +1,14 @@
+program procedure2_fail
+begin
+	procedure Proc() : string 
+	begin
+           in
+	   return  42  (* error, Proc declared as returning string *)
+	end;
+
+	procedure main()
+	begin
+	   in
+	   Proc()
+	end
+end

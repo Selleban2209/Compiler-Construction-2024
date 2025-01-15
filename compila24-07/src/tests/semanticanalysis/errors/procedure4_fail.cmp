@@ -1,0 +1,13 @@
+program procedure4_fail
+begin
+   procedure Add( val1 : int , val2 : int )  : int 
+   begin
+    in
+    return val1 + val2
+   end;
+   procedure main()
+   begin 
+      in
+      printint( Add( 40 ) ) (* error: procedure takes two arguments *)
+   end
+end

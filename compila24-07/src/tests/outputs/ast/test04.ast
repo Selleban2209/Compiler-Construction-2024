@@ -1,0 +1,8 @@
+(PROGRAM (NAME R)
+	(STRUCT (NAME abc)))
+	(STRUCT (NAME ef)
+		(PARAM_DECL (NAME  )x : int)))
+	(STRUCT (NAME a5)
+		(PARAM_DECL (NAME  )x : int)
+		(PARAM_DECL (NAME  )y : bool)))
+)
