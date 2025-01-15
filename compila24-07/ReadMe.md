@@ -1,6 +1,6 @@
 # Compiler Construction Group 07
 
-Group members: Selleban Farah, sellbaf@uio.no 
+Group members: Selleban Farah
 
 
 
